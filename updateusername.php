@@ -23,8 +23,8 @@ while ($row = $sth->fetch()) {
         // Update it
         $sth2->execute();
     //  Has the username been deleted?
-    } elseif(!isset($chat['username'])) {
-        $username = 'NoUsername';
+    } elseif(!isset($chat['username']) && !isset($chat['error_code'])) {
+        $username = 'empty';
         $sth2->bindParam(':username', $username);
         $sth2->bindValue(':id_contact', $row['id_contact'], PDO::PARAM_INT);
         // Change it with NoUsername

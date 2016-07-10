@@ -1,4 +1,6 @@
 ## [@MyAddressBookBot](https://telegram.me/myaddressbookbot)
+https://img.shields.io/badge/status-running-brightgreen.svg?style=plastic https://img.shields.io/badge/build-1.0-green.svg?style=plastic https://img.shields.io/badge/license-GNU_AGPLv3-blue.svg?style=plastic
+
 MyAddressBookBot is a Telegram Bot written in PHP 7.1 that consists in an address book of usernames for Telegram Messanger.
 
 Telegram address book saves contacts by telephone number, but most users use the username to get in touch with people on this IM. This bot save contacts by username and let the user modify the basic info. Plus it update the username of contacts everyday so you'll never lose them.

@@ -274,7 +274,7 @@ function processCallbackQuery(&$callback_query, REDIS &$redis, PDO &$pdo) {
                     }
                     break;
                 case 'update/all':
-                    $sth = $pdo->prepare('SELECT DISTINCT "id_contact", "username" FROM (SELECT "id_contact", "username" FROM "Contact" WHERE "id_owner" = :chat_id) AS T WHERE NOT ("id_contact" = \'NULL\' AND "id_contact" = NULL)');
+                    $sth = $pdo->prepare('SELECT DISTINCT "id_contact", "username" FROM (SELECT "id_contact", "username" FROM "Contact" WHERE "id_owner" = :chat_id) AS T WHERE NOT ("id_contact" IS NULL)');
                     $sth->bindParam(':chat_id', $chat_id);
                     $sth->execute();
                     $sth2 = $pdo->prepare('UPDATE "Contact" SET "username" = :username WHERE "id_contact" = :id_contact');
@@ -285,7 +285,7 @@ function processCallbackQuery(&$callback_query, REDIS &$redis, PDO &$pdo) {
                             $sth2->bindParam(':username', $chat['username']);
                             $sth2->bindValue(':id_contact', $row['id_contact'], PDO::PARAM_INT);
                             $sth2->execute();
-                        } elseif(!isset($chat['username'])) {
+                        } elseif(!isset($chat['username']) && !isset($chat['error_code'])) {
                             $username = 'NoUsername';
                             $sth2->bindParam(':username', $username);
                             $sth2->bindValue(':id_contact', $row['id_contact'], PDO::PARAM_INT);
