@@ -1,0 +1,29 @@
+
+    "name": "danyspin97/my-address-book-bot",
+    "description": "Your personal address book on Telegram.",
+    "version": "2.0.0",
+    "type": "Project",
+    "license": "AGPL-3.0+",
+    "keywords": ["telegram", "bot", "telegram-bot", "myaddressbookbot"],
+    "homepage": "https://gitlab.com/danyspin97/MyAddressBookBot",
+    "authors": [
+        {
+            "name": "Dany Spin",
+            "homepage": "https://gitlab.com/u/danyspin97",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "ext-redis": "*",
+        "ext-curl": "*",
+        "wisedragonstd/hades-wrapper": "0.3.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.4.*",
+    },
+    "suggest": {
+        "ext-mysql": "*",
+        "ext-pgsql": "*"
+    }
+}
