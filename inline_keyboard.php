@@ -1,6 +1,6 @@
 <?php
 
-class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
+class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
     public function &getAddInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
@@ -164,7 +164,7 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getOptionsInlineKeyboard() {
+    public function &getOptionsInlineKeyboard(&$from) {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -264,7 +264,7 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getEditASInlineKeyboard(&$row) {
+    public function &getEditContactInlineKeyboard(&$row) {
         if (isset($row['id_contact']) && $row['id_contact'] !== 'NULL') {
             $inline_keyboard = [ 'inline_keyboard' =>
                 [
@@ -355,7 +355,7 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                 'callback_data' => 'delete/asprompt'
             ]
         ]);
-        if ($this->redis->exists($chat_id . ':search_query')) {
+        if ($this->bot->redis->exists($chat_id . ':search_query')) {
             array_push($inline_keyboard['inline_keyboard'], [
                 [
                     'text' => $this->bot->localization[$this->bot->language]['BackToSearch_Button'],
@@ -376,7 +376,7 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getDeleteASPromptInlineKeyboard() {
+    public function &getDeleteContactPromptInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -490,7 +490,7 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
     }
 
     // Show basic button when a non valid public function or data is requested
-    public function &getASNotValidInlineKeyboard() {
+    public function &getContactNotValidInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -594,11 +594,11 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                                                     'callback_data' => $prefix . "/3"
                                                 ],
                                                 [
-                                                    'text' => '4>',
+                                                    'text' => '4 ›',
                                                     'callback_data' => $prefix . "/4"
                                                 ],
                                                 [
-                                                    'text' => "$list>>",
+                                                    'text' => "$list ››",
                                                     'callback_data' => $prefix . "/$list"
                                                 ]
                                                 ]
@@ -724,11 +724,11 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                                             'callback_data' => $prefix . "/3"
                                         ],
                                         [
-                                            'text' => '4>',
+                                            'text' => '4 ›',
                                             'callback_data' => $prefix . "/4"
                                         ],
                                         [
-                                            'text' => "$list>>",
+                                            'text' => "$list ››",
                                             'callback_data' => $prefix . "/$list"
                                         ]
                                     ]
@@ -840,11 +840,11 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                                         'callback_data' => 'null'
                                     ],
                                     [
-                                        'text' => '4>',
+                                        'text' => '4 ›',
                                         'callback_data' => $prefix . "/4"
                                     ],
                                     [
-                                        'text' => "$list>>",
+                                        'text' => "$list ››",
                                         'callback_data' => $prefix . "/$list"
                                     ],
                                 ]
@@ -928,15 +928,15 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                             [
                                 [
                                     'text' => '1',
-                                    'callback_data' => $prefix . "/1"
+                                    'callback_data' => $prefix . '/1'
                                 ],
                                 [
                                     'text' => '2',
-                                    'callback_data' => $prefix . "/2"
+                                    'callback_data' => $prefix . '/2'
                                 ],
                                 [
                                     'text' => '3',
-                                    'callback_data' => $prefix . "/3"
+                                    'callback_data' => $prefix . '/3'
                                 ],
                                 [
                                     'text' => '• 4 •',
@@ -951,15 +951,15 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                             [
                                 [
                                     'text' => '1',
-                                    'callback_data' => $prefix . "/1"
+                                    'callback_data' => $prefix . '/1'
                                 ],
                                 [
                                     'text' => '2',
-                                    'callback_data' => $prefix . "/2"
+                                    'callback_data' => $prefix . '/2'
                                 ],
                                 [
                                     'text' => '3',
-                                    'callback_data' => $prefix . "/3"
+                                    'callback_data' => $prefix . '/3'
                                 ],
                                 [
                                     'text' => '• 4 •',
@@ -967,7 +967,7 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                                 ],
                                 [
                                     'text' => '5',
-                                    'callback_data' => $prefix . "/5"
+                                    'callback_data' => $prefix . '/5'
                                 ],
                             ]
                         ]
@@ -979,19 +979,19 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                         [
                             [
                                 'text' => '1',
-                                'callback_data' => $prefix . "/1"
+                                'callback_data' => $prefix . '/1'
                             ],
                             [
                                 'text' => '2',
-                                'callback_data' => $prefix . "/2"
+                                'callback_data' => $prefix . '/2'
                             ],
                             [
                                 'text' => '3',
-                                'callback_data' => $prefix . "/3"
+                                'callback_data' => $prefix . '/3'
                             ],
                             [
                                 'text' => '4',
-                                'callback_data' => $prefix . "/4"
+                                'callback_data' => $prefix . '/4'
                             ],
                             [
                                 'text' => '• 5 •',
@@ -1008,24 +1008,24 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                         [
                             [
                                 [
-                                    'text' => '<<1',
-                                    'callback_data' => $prefix . "/1"
+                                    'text' => '‹‹ 1',
+                                    'callback_data' => $prefix . '/1'
                                 ],
                                 [
-                                    'text' => "<$this->bot->index_addressbookm",
-                                    'callback_data' => $prefix . "/$this->bot->index_addressbookm"
+                                    'text' => '‹ ' . $this->bot->index_addressbookm,
+                                    'callback_data' => $prefix . '/' . $this->bot->index_addressbookm
                                 ],
                                 [
-                                    'text' => "• $this->bot->index_addressbook •",
+                                    'text' => '• ' . $this->bot->index_addressbook . ' •',
                                     'callback_data' => 'null',
                                 ],
                                 [
-                                    'text' => "$this->bot->index_addressbookp>",
-                                    'callback_data' => $prefix . "/$this->bot->index_addressbookp"
+                                    'text' => $this->bot->index_addressbookp . ' ›',
+                                    'callback_data' => $prefix . '/' . $this->bot->index_addressbookp
                                 ],
                                 [
-                                    'text' => "$list>>",
-                                    'callback_data' => $prefix . "/$list"
+                                    'text' => $list . ' ››',
+                                    'callback_data' => $prefix . '/' . $list
                                 ]
                             ]
                         ]
@@ -1037,20 +1037,20 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                         [
                             [
                                 [
-                                    'text' => '<<1',
-                                    'callback_data' => $prefix . "/1"
+                                    'text' => '‹‹1',
+                                    'callback_data' => $prefix . '/1'
                                 ],
                                 [
-                                    'text' => "$this->bot->index_addressbookm",
-                                    'callback_data' => $prefix . "/$this->bot->index_addressbookm"
+                                    'text' => '' . $this->bot->index_addressbookm,
+                                    'callback_data' => $prefix . '/' . $this->bot->index_addressbookm
                                 ],
                                 [
-                                    'text' => "• $this->bot->index_addressbook •",
+                                    'text' => '• ' . $this->bot->index_addressbook . ' •',
                                     'callback_data' => 'null',
                                 ],
                                 [
-                                    'text' => "$this->bot->index_addressbookp",
-                                    'callback_data' => $prefix . "/$this->bot->index_addressbookp"
+                                    'text' => '' . $this->bot->index_addressbookp,
+                                    'callback_data' => $prefix . '/' . $this->bot->index_addressbookp
                                 ],
                                 [
                                 'text' => "$list",
@@ -1066,20 +1066,20 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                         [
                             [
                                 [
-                                    'text' => '<<1',
-                                    'callback_data' => $prefix . "/1"
+                                    'text' => '‹‹ 1',
+                                    'callback_data' => $prefix . '/1'
                                 ],
                                 [
-                                    'text' => "<$this->bot->index_addressbookmm",
-                                    'callback_data' => $prefix . "/$this->bot->index_addressbookmm"
+                                    'text' => '‹ ' . $this->bot->index_addressbookmm,
+                                    'callback_data' => $prefix . '/' . $this->bot->index_addressbookmm
                                 ],
                                 [
-                                    'text' => "$this->bot->index_addressbookm",
-                                    'callback_data' => $prefix . "/$this->bot->index_addressbookm",
+                                    'text' => '' . $this->bot->index_addressbookm,
+                                    'callback_data' => $prefix . '/' . $this->bot->index_addressbookm
                                 ],
                                 [
-                                    'text' => "• $this->bot->index_addressbook •",
-                                    'callback_data' => $prefix . "/$this->bot->index_addressbook"
+                                    'text' => '• ' . $this->bot->index_addressbook . ' •',
+                                    'callback_data' => $prefix . '/' . $this->bot->index_addressbook
                                 ],
                                 [
                                     'text' => "$list",
@@ -1096,24 +1096,24 @@ class Inline_keyboard extends \WiseDragonStd\HadesWrapper\Inline_keyboard {
                         [
                             [
                                 [
-                                    'text' => '<<1',
-                                    'callback_data' => $prefix . "/1"
+                                    'text' => '‹‹ 1',
+                                    'callback_data' => $prefix . '/1'
                                 ],
                                 [
-                                    'text' => "<$this->bot->index_addressbookmmm",
-                                    'callback_data' => $prefix . "/$this->bot->index_addressbookmmm"
+                                    'text' => '‹ ' . $this->bot->index_addressbookmmm,
+                                    'callback_data' => $prefix . '/' . $this->bot->index_addressbookmmm
                                 ],
                                 [
-                                    'text' => "$this->bot->index_addressbookmm",
-                                    'callback_data' => $prefix . "/$this->bot->index_addressbookmm",
+                                    'text' => '' . $this->bot->index_addressbookmm,
+                                    'callback_data' => $prefix . '/' . $this->bot->index_addressbookmm,
                                 ],
                                 [
-                                    'text' => "$this->bot->index_addressbookm",
-                                    'callback_data' => $prefix . "/$this->bot->index_addressbookm"
+                                    'text' => '' . $this->bot->index_addressbookm,
+                                    'callback_data' => $prefix . '/' . $this->bot->index_addressbookm
                                 ],
                                 [
-                                    'text' => "• $this->bot->index_addressbook •",
-                                    'callback_data' => $prefix . "/$this->bot->index_addressbook"
+                                    'text' => '• ' . $this->bot->index_addressbook . ' •',
+                                    'callback_data' => $prefix . '/' . $this->bot->index_addressbook
                                 ]
                             ]
                         ]

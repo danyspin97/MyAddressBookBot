@@ -9,10 +9,10 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
     * $text       The text that will replace the info data
     */
    public function updateContactInfo($info, $text) {
-       $sth = $this->pdo->prepare("UPDATE \"Contact\" SET \"$info\" = :$info WHERE \"id\" = :id_as AND \"id_owner\" = :chat_id");
-       $sth->bindParam(":$info", $text);
+       $sth = $this->pdo->prepare("UPDATE \"Contact\" SET \"$info\" = :info WHERE \"id\" = :id_as AND \"id_owner\" = :chat_id");
+       $sth->bindParam(":info", $text);
        $sth->bindParam(':id_as', $this->bot->selected_contact);
-       $sth->bindParam(':chat_id', $this->bot->chat_id);
+       $sth->bindParam(':chat_id', $this->bot->getChatID());
        $sth->execute();
        $sth = null;
    }
@@ -20,7 +20,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
    public function &getContactRowByID() {
        $sth = $this->pdo->prepare('SELECT "username", "first_name", "last_name", "desc", "id", "id_contact" FROM "Contact" WHERE "id" = :id_as AND "id_owner" = :id_owner');
        $sth->bindParam(':id_as', $this->bot->selected_contact);
-       $sth->bindParam(':id_owner', $this->bot->chat_id);
+       $sth->bindParam(':id_owner', $this->bot->getChatID());
        $sth->execute();
        $row = $sth->fetch();
        $sth = null;
@@ -30,7 +30,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
    // Get the number of the contact owned by a user
    public function getContactRowOwnedByUser() {
        $sth = $this->pdo->prepare('SELECT COUNT("id") FROM "Contact" WHERE "id_owner" = :chat_id');
-       $sth->bindParam(':chat_id', $this->bot->chat_id);
+       $sth->bindParam(':chat_id', $this->bot->getChatID());
        $sth->execute();
        $id = $sth->fetchColumn();
        $sth = null;
@@ -43,7 +43,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
 
    public function isUserRegistered() {
        $sth = $this->pdo->prepare('SELECT COUNT("chat_id") FROM "User" WHERE "chat_id" = :chat_id');
-       $sth->bindParam(':chat_id', $this->bot->chat_id);
+       $sth->bindParam(':chat_id', $this->bot->getChatID());
        $sth->execute();
        if ($sth->fetchColumn() > 0) {
            return true;
@@ -60,7 +60,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
        $sth = $this->pdo->prepare('SELECT "id", "username" FROM (SELECT "id", "id_contact", "username" FROM "Contact" WHERE "id_owner" = :chat_id) AS T WHERE "id_contact" = :id_contact OR "username" LIKE :username');
        $sth->bindParam(':id_contact', $id_contact);
        $sth->bindParam(':username', $username);
-       $sth->bindParam(':chat_id', $this->bot->chat_id);
+       $sth->bindParam(':chat_id', $this->bot->getChatID());
        $sth->execute();
        $row = $sth->fetch();
        $sth = null;
@@ -83,7 +83,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
    public function getUsernameFromID() {
        $sth = $this->pdo->prepare('SELECT "username" FROM "Contact" WHERE "id_owner" = :chat_id AND "id" = :selected_contact');
        $sth->bindParam(':selected_contact', $this->bot->selected_contact);
-       $sth->bindParam(':chat_id', $this->bot->chat_id);
+       $sth->bindParam(':chat_id', $this->bot->getChatID());
        $sth->execute();
        $row = $sth->fetch();
        $sth = null;
@@ -102,7 +102,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
             $sth = $this->pdo->prepare('INSERT INTO "Contact" ("id", "id_owner", "username", "first_name", "last_name", "desc") VALUES (:id, :chat_id, :username, :first_name, :last_name, :desc)');
         }
         $sth->bindParam(':id', $row['id']);
-        $sth->bindParam(':chat_id', $this->bot->chat_id);
+        $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->bindParam(':username', $row['username']);
         $sth->bindParam(':first_name', $row['first_name']);
         $sth->bindParam(':last_name', $row['last_name']);
@@ -113,8 +113,8 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
 
     public function &getSearchResults(&$query) {
         $string = $this->localization[$this->language]['ShowResults_Msg'] . "\"<b>$query</b>\"" . NEWLINE;
-        $sth = $this->pdo->prepare("SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM (SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id) AS T WHERE \"first_name\" LIKE '$query%'  OR \"first_name\" LIKE '%$query%' OR \"last_name\" LIKE '$query%' OR \"last_name\" LIKE '%$query%' OR  CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '$query%' OR username LIKE '$query%' OR username LIKE '%$query%' OR username LIKE '@$query%' OR username LIKE '%@$query%' OR CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '%$query' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '$query%' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '%$query' ORDER BY $this->order;");
-        $sth->bindParam(':chat_id', $this->chat_id);
+        $sth = $this->pdo->prepare("SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM (SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id) AS T WHERE \"first_name\" LIKE '$query%'  OR \"first_name\" LIKE '%$query%' OR \"last_name\" LIKE '$query%' OR \"last_name\" LIKE '%$query%' OR  CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '$query%' OR username LIKE '$query%' OR username LIKE '%$query%' OR username LIKE '@$query%' OR username LIKE '%@$query%' OR CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '%$query' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '$query%' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '%$query' ORDER BY " . $this->bot->order);
+        $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->execute();
         $cont = 1;
         $displayedrow = 0;
@@ -127,14 +127,14 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
                         'callback_data' => 'id/' . $row['id'],
                     ]
                 ];
-                $string = $string . getContactInfoByRow($row, $this->language);
+                $string = $string . $this->bot->getContactInfoByRow($row);
                 $displayedrow++;
             } elseif ($displayedrow > 0 && $displayedrow < SPACEPERVIEW) {
                 array_push($usernames, [
                     'text' => '@' . $row['username'],
                     'callback_data' => 'id/' . $row['id'],
                 ]);
-                $string = $string . getContactInfoByRow($row, $this->language);
+                $string = $string . $this->bot->getContactInfoByRow($row);
                 $displayedrow++;
             } elseif ($displayedrow == SPACEPERVIEW) {
                 break;
@@ -151,30 +151,30 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
     }
 
     public function &getABList() {
-        $string = $this->localization[$this->language]['Bot_Title'] . NEWLINE;
-        $id = ($this->index_addressbook - 1) * SPACEPERVIEW + 1;
+        $string = $this->bot->localization[$this->language]['Bot_Title'] . NEWLINE;
+        $id = ($this->bot->index_addressbook - 1) * SPACEPERVIEW + 1;
         $maxid = $id + SPACEPERVIEW;
-        $sth = $this->pdo->prepare("SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id ORDER BY $this->order;");
-        $sth->bindParam(':chat_id', $this->chat_id);
+        $sth = $this->pdo->prepare("SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id ORDER BY " . $this->bot->order);
+        $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->execute();
         $cont = 1;
         $displayedrow = 0;
         while($row = $sth->fetch()) {
-            if ($displayedrow === 0 && ($cont == (($this->index_addressbook - 1) * SPACEPERVIEW + 1))) {
+            if ($displayedrow === 0 && ($cont == (($this->bot->index_addressbook - 1) * SPACEPERVIEW + 1))) {
                 $usernames = [
                     [
                         'text' => '@' . $row['username'],
                         'callback_data' => 'id/' . $row['id'],
                     ]
                 ];
-                $string = $string . getContactInfoByRow($row);
+                $string = $string . $this->bot->getContactInfoByRow($row);
                 $displayedrow++;
             } elseif ($displayedrow > 0 && $displayedrow < SPACEPERVIEW) {
                 array_push($usernames, [
                     'text' => '@' . $row['username'],
                     'callback_data' => 'id/' . $row['id'],
                 ]);
-                $string = $string . getContactInfoByRow($row);
+                $string = $string . $this->bot->getContactInfoByRow($row);
                 $displayedrow++;
             } elseif ($displayedrow == SPACEPERVIEW) {
                 break;
@@ -192,7 +192,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
 
     public function &getListResults(&$query) {
         $sth = $this->pdo->prepare("SELECT COUNT(\"username\") FROM (SELECT \"username\", \"first_name\", \"last_name\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id) AS T WHERE \"first_name\" LIKE '$query%'  OR \"first_name\" LIKE '%$query%' OR \"last_name\" LIKE '$query%' OR \"last_name\" LIKE '%$query%' OR  CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '$query%' OR username LIKE '$query%' OR username LIKE '%$query%' OR username LIKE '@$query%' OR username LIKE '%@$query%' OR CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '%$query' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '$query%' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '%$query';");
-        $sth->bindParam(':chat_id', $this->chat_id);
+        $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->execute();
         $results = $sth->fetchColumn();
         $list = intval($results/ SPACEPERVIEW);
@@ -205,7 +205,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
     public function &getList() {
         // Count how many Contact does this user own by doing a SELECT COUNT query
         $sth = $this->pdo->prepare('SELECT COUNT("id") FROM "Contact" WHERE "id_owner" = :chat_id');
-        $sth->bindParam(':chat_id', $this->chat_id);
+        $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->execute();
         $addressspacecount = $sth->fetchColumn();
         $sth = null;

@@ -1,7 +1,10 @@
 <?php
 
-include "../autoload.php";
-
+require './vendor/autoload.php';
+require 'myaddressbookbot.php';
+require 'database.php';
+require 'inline_keyboard.php';
+require 'languages.php';
 /*
  * Main script of the Bot
  * Each request sent ny a telegram client will be parsed here and
@@ -13,9 +16,12 @@ define('COMMANDLIST', "start - Start me, help - Get help, suggestion and tips to
 // Set error reporting to skip PHP_NOTICE: http://php.net/manual/en/function.error-reporting.php
 error_reporting(E_ALL & ~E_NOTICE);
 
-$bot = new Bot('token');
+$bot = new MyAddressBookBot('225771982:AAHrQ5-9DTh8MBUuVW7qOepW5srz9-HdH-E');
 $bot->setLocalization($localization);
-$bot->database = new Database('pgsql', 'dbname', 'user', 'name');
-$bot->inline_keyboard = new Inline_keyboard();
-$bot->getUpdateRedis();
+$bot->setDatabase(new Database('pgsql', 'MyAddressBookDB', 'user', 'pass', $bot));
+$bot->connectToRedis();
+$bot->inline_keyboard = new InlineKeyboard($bot);
+while(true) {
+$bot->getUpdatesRedis();
+}
 $bot = null;
