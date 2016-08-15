@@ -355,7 +355,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
                 'callback_data' => 'delete/asprompt'
             ]
         ]);
-        if ($this->bot->redis->exists($chat_id . ':search_query')) {
+        if ($this->bot->redis->exists($this->bot->getChatID() . ':search_query')) {
             array_push($inline_keyboard['inline_keyboard'], [
                 [
                     'text' => $this->bot->localization[$this->bot->language]['BackToSearch_Button'],
