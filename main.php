@@ -23,6 +23,7 @@ $bot->setLocalization($localization);
 $bot->setDatabase(new Database($driver, $dbname, $user, $password, $bot));
 $bot->connectToRedis();
 $bot->inline_keyboard = new InlineKeyboard($bot);
+$bot->adjustOffsetRedis();
 while(true) {
 $bot->getUpdatesRedis();
 }

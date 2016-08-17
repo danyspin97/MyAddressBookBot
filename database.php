@@ -57,7 +57,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
     * contact that has $username as username, or, if there isn't, check if there is a user with the same $id_contact (it means he is the same user and he just changed username)
     */
    public function checkContactExist(&$username, $id_contact = -3) {
-       $sth = $this->pdo->prepare('SELECT "id", "username" FROM (SELECT "id", "id_contact", "username" FROM "Contact" WHERE "id_owner" = :chat_id) AS T WHERE "id_contact" = :id_contact OR "username" LIKE :username');
+       $sth = $this->pdo->prepare('SELECT "id", "username" FROM (SELECT "id", "id_contact", "username" FROM "Contact" WHERE "id_owner" = :chat_id) AS T WHERE "id_contact" = :id_contact OR LOWER("username") LIKE LOWER(:username)');
        $sth->bindParam(':id_contact', $id_contact);
        $sth->bindParam(':username', $username);
        $sth->bindParam(':chat_id', $this->bot->getChatID());
@@ -65,18 +65,11 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
        $row = $sth->fetch();
        $sth = null;
        if(isset($row['id'])) {
-           if ($row['username'] !== $username) {
-               $chat = apiRequest('getChat', ['chat_id' => $id_contact]);
-               $sth = $this->pdo->prepare('UPDATE "Contact" SET "username" = :username WHERE "id_contact" = :id_contact');
-               $sth->bindParam(':username', $chat['username']);
-               $sth->bindParam(':id_contact', $id_contact);
-               $sth->execute();
-               $sth = null;
-           }
            return $row['id'];
        } else {
            return 0;
        }
+
    }
 
    // Return the username of a contact by passing the $this->bot->chat_id of the owner and the $id of the contact
@@ -111,9 +104,10 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
         $sth = null;
     }
 
-    public function &getSearchResults(&$query) {
+    public function &getSearchResults($query) {
         $string = $this->localization[$this->language]['ShowResults_Msg'] . "\"<b>$query</b>\"" . NEWLINE;
-        $sth = $this->pdo->prepare("SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM (SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id) AS T WHERE \"first_name\" LIKE '$query%'  OR \"first_name\" LIKE '%$query%' OR \"last_name\" LIKE '$query%' OR \"last_name\" LIKE '%$query%' OR  CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '$query%' OR username LIKE '$query%' OR username LIKE '%$query%' OR username LIKE '@$query%' OR username LIKE '%@$query%' OR CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '%$query' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '$query%' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '%$query' ORDER BY " . $this->bot->order);
+        $query = strtolower($query);
+        $sth = $this->pdo->prepare("SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM (SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id) AS T WHERE LOWER(\"first_name\") LIKE '$query%'  OR LOWER(\"first_name\") LIKE '%$query%' OR LOWER(\"last_name\") LIKE '$query%' OR LOWER(\"last_name\") LIKE '%$query%' OR  LOWER(CONCAT_WS(' ', \"first_name\", \"last_name\")) LIKE '$query%' OR LOWER(username) LIKE '$query%' OR LOWER(username) LIKE '%$query%' OR LOWER(username) LIKE '@$query%' OR LOWER(username) LIKE '%@$query%' OR LOWER(CONCAT_WS(' ', \"first_name\", \"last_name\")) LIKE '%$query' OR LOWER(CONCAT_WS(' ', \"last_name\", \"first_name\")) LIKE '$query%' OR LOWER(CONCAT_WS(' ', \"last_name\", \"first_name\")) LIKE '%$query' $ORDER BY " . $this->bot->order);
         $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->execute();
         $cont = 1;
@@ -142,6 +136,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
                 $cont++;
             }
         }
+        print_r($usernames);
         $sth = null;
         $container = [
             'string' => &$string,
@@ -190,7 +185,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
         return $container;
     }
 
-    public function &getListResults(&$query) {
+    public function &getListResults($query) {
         $sth = $this->pdo->prepare("SELECT COUNT(\"username\") FROM (SELECT \"username\", \"first_name\", \"last_name\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id) AS T WHERE \"first_name\" LIKE '$query%'  OR \"first_name\" LIKE '%$query%' OR \"last_name\" LIKE '$query%' OR \"last_name\" LIKE '%$query%' OR  CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '$query%' OR username LIKE '$query%' OR username LIKE '%$query%' OR username LIKE '@$query%' OR username LIKE '%@$query%' OR CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '%$query' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '$query%' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '%$query';");
         $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->execute();

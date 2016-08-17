@@ -6,11 +6,11 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Add_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Add_Button'],
                         'callback_data' => 'add'
                     ],
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Options_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Options_Button'],
                         'callback_data' => 'options/menu'
                     ]
                 ]
@@ -24,7 +24,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Add_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Add_Button'],
                         'callback_data' => 'add'
                     ]
                 ]
@@ -32,13 +32,13 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         ];
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['BrowseAB_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['BrowseAB_Button'],
                 'callback_data' => 'show/ab'
             ]
         ]);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Options_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Options_Button'],
                 'callback_data' => 'options/menu'
             ]
         ]);
@@ -88,7 +88,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
                         'callback_data' => 'back'
                     ]
                 ]
@@ -102,11 +102,11 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
                         'callback_data' => 'back'
                     ],
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Skip_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Skip_Button'],
                         'callback_data' => 'skip'
                     ]
                 ]
@@ -120,7 +120,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
                         'callback_data' => 'show/ab'
                     ]
                 ]
@@ -135,11 +135,11 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
                 [
                     [
                         [
-                            'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
+                            'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
                             'callback_data' => 'back'
                         ],
                         [
-                            'text' => $this->bot->localization[$this->bot->language]['DeleteLastName_Button'],
+                            'text' => &$this->bot->localization[$this->bot->language]['DeleteLastName_Button'],
                             'callback_data' => 'delete/info'
                         ]
                     ]
@@ -150,11 +150,11 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
                 [
                     [
                         [
-                            'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
+                            'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
                             'callback_data' => 'back'
                         ],
                         [
-                            'text' => $this->bot->localization[$this->bot->language]['DeleteDescription_Button'],
+                            'text' => &$this->bot->localization[$this->bot->language]['DeleteDescription_Button'],
                             'callback_data' => 'delete/info'
                         ]
                     ]
@@ -169,7 +169,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Language_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Language_Button'],
                         'callback_data' => 'language'
                     ]
                 ]
@@ -177,26 +177,26 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         ];
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['UpdateAll_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['UpdateAll_Button'],
                 'callback_data' => 'update/all'
             ],
         ]);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Order_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Order_Button'],
                 'callback_data' => 'order'
             ],
         ]);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['DeleteAll_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['DeleteAll_Button'],
                 'callback_data' => 'delete/allprompt'
             ],
         ]);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
-                'callback_data' => $from
+                'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
+                'callback_data' => &$from
             ],
         ]);
         return json_encode($inline_keyboard);
@@ -207,7 +207,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['FirstOrder_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['FirstOrder_Button'],
                         'callback_data' => 'order/0'
                     ]
                 ]
@@ -215,19 +215,19 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         ];
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['SecondOrder_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['SecondOrder_Button'],
                 'callback_data' => 'order/1'
             ],
          ]);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['ThirdOrder_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['ThirdOrder_Button'],
                 'callback_data' => 'order/2'
             ],
         ]);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
                 'callback_data' => 'back'
             ]
         ]);
@@ -240,7 +240,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             if ($this->bot->language_msg === $this->bot->localization[$this->bot->language]['Language']) {
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
-                        'text' => $this->bot->language_msg,
+                        'text' => &$this->bot->language_msg,
                         'callback_data' => 'same/language'
                     ]
                 ]);
@@ -257,7 +257,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         unset($this->bot->language_msg);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
                 'callback_data' => 'back'
             ]
         ]);
@@ -270,11 +270,11 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
                 [
                     [
                         [
-                            'text' => $this->bot->localization[$this->bot->language]['UpdateUsername_Button'],
+                            'text' => &$this->bot->localization[$this->bot->language]['UpdateUsername_Button'],
                             'callback_data' => 'update/username'
                         ],
                         [
-                            'text' => $this->bot->localization[$this->bot->language]['EditFirstName_Button'],
+                            'text' => &$this->bot->localization[$this->bot->language]['EditFirstName_Button'],
                             'callback_data' => 'edit/firstname'
                         ]
                     ]
@@ -285,11 +285,11 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
                 [
                     [
                         [
-                            'text' => $this->bot->localization[$this->bot->language]['EditUsername_Button'],
+                            'text' => &$this->bot->localization[$this->bot->language]['EditUsername_Button'],
                             'callback_data' => 'edit/username'
                         ],
                         [
-                            'text' => $this->bot->localization[$this->bot->language]['EditFirstName_Button'],
+                            'text' => &$this->bot->localization[$this->bot->language]['EditFirstName_Button'],
                             'callback_data' => 'edit/firstname'
                         ]
                     ]
@@ -300,22 +300,22 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             if (isset($row['desc'])  && ($row['desc'] !== 'NULL')) {
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['EditLastName_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['EditLastName_Button'],
                         'callback_data' => 'edit/lastname'
                     ],
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['EditDescription_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['EditDescription_Button'],
                         'callback_data' => 'edit/desc'
                     ]
                 ]);
             } else {
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['EditLastName_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['EditLastName_Button'],
                         'callback_data' => 'edit/lastname'
                     ],
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['AddDescription_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['AddDescription_Button'],
                         'callback_data' => 'add/desc'
                     ]
                 ]);
@@ -323,53 +323,53 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         } elseif (isset($row['desc']) && ($row['desc'] !== 'NULL')) {
             array_push($inline_keyboard['inline_keyboard'], [
                 [
-                    'text' => $this->bot->localization[$this->bot->language]['AddLastName_Button'],
+                    'text' => &$this->bot->localization[$this->bot->language]['AddLastName_Button'],
                     'callback_data' => 'add/lastname'
                 ],
                 [
-                    'text' => $this->bot->localization[$this->bot->language]['EditDescription_Button'],
+                    'text' => &$this->bot->localization[$this->bot->language]['EditDescription_Button'],
                     'callback_data' => 'edit/desc'
                 ]
             ]);
         } else {
             array_push($inline_keyboard['inline_keyboard'], [
                 [
-                    'text' => $this->bot->localization[$this->bot->language]['AddLastName_Button'],
+                    'text' => &$this->bot->localization[$this->bot->language]['AddLastName_Button'],
                     'callback_data' => 'add/lastname'
                 ],
                 [
-                    'text' => $this->bot->localization[$this->bot->language]['AddDescription_Button'],
+                    'text' => &$this->bot->localization[$this->bot->language]['AddDescription_Button'],
                     'callback_data' => 'add/desc'
                 ]
             ]);
         }
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Share_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Share_Button'],
                 'switch_inline_query' => $row['username']
             ]
         ]);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Delete_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Delete_Button'],
                 'callback_data' => 'delete/asprompt'
             ]
         ]);
         if ($this->bot->redis->exists($this->bot->getChatID() . ':search_query')) {
             array_push($inline_keyboard['inline_keyboard'], [
                 [
-                    'text' => $this->bot->localization[$this->bot->language]['BackToSearch_Button'],
+                    'text' => &$this->bot->localization[$this->bot->language]['BackToSearch_Button'],
                     'callback_data' => 'back/search'
                 ]
             ]);
         }
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['BrowseAB_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['BrowseAB_Button'],
                 'callback_data' => 'show/ab'
             ],
             [
-                'text' => $this->bot->localization[$this->bot->language]['Menu_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Menu_Button'],
                 'callback_data' => 'menu'
             ]
         ]);
@@ -381,11 +381,11 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Cancel_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Cancel_Button'],
                         'callback_data' => 'back'
                     ],
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Confirm_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Confirm_Button'],
                         'callback_data' => 'delete/as'
                     ]
                 ]
@@ -399,11 +399,11 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Cancel_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Cancel_Button'],
                         'callback_data' => 'back'
                     ],
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Confirm_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Confirm_Button'],
                         'callback_data' => 'delete/all'
                     ]
                 ]
@@ -418,11 +418,11 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Cancel_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Cancel_Button'],
                         'callback_data' => 'back'
                     ],
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Skip_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Skip_Button'],
                         'callback_data' => 'skip'
                     ]
                 ]
@@ -436,11 +436,11 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Save_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Save_Button'],
                         'callback_data' => 'save',
                     ],
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Edit_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Edit_Button'],
                         'callback_data' => 'edit/contact',
                     ]
                 ]
@@ -448,13 +448,13 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         ];
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['AddDescription_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['AddDescription_Button'],
                 'callback_data' => 'add/desc&save',
             ]
         ]);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Cancel_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Cancel_Button'],
                 'callback_data' => 'back',
             ]
         ]);
@@ -480,13 +480,13 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['SaveFromInline_Button'],
+                        'text' => "hfhau", //&$this->bot->localization[$this->bot->language]['SaveFromInline_Button'],
                         'callback_data' => 'shared/' . $share,
                     ]
                 ]
             ]
         ];
-        return $inline_keyboard;
+        return json_encode($inline_keyboard);
     }
 
     // Show basic button when a non valid public function or data is requested
@@ -495,7 +495,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Add_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Add_Button'],
                         'callback_data' => 'add'
                     ]
                 ]
@@ -503,13 +503,13 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         ];
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['BrowseAB_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['BrowseAB_Button'],
                 'callback_data' => 'show/ab'
             ]
         ]);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Menu_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Menu_Button'],
                 'callback_data' => 'menu'
             ]
         ]);
@@ -521,7 +521,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Add_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['Add_Button'],
                         'callback_data' => 'add'
                     ]
                 ]
@@ -529,13 +529,13 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         ];
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Menu_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Menu_Button'],
                 'callback_data' => 'menu'
             ]
         ]);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Options_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Options_Button'],
                 'callback_data' => 'options/ab'
             ]
         ]);
@@ -547,7 +547,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['SearchAgain_Button'],
+                        'text' => &$this->bot->localization[$this->bot->language]['SearchAgain_Button'],
                         'callback_data' => 'search'
                     ]
                 ]
@@ -555,13 +555,13 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         ];
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['BrowseAB_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['BrowseAB_Button'],
                 'callback_data' => 'show/ab'
             ]
         ]);
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Menu_Button'],
+                'text' => &$this->bot->localization[$this->bot->language]['Menu_Button'],
                 'callback_data' => 'menu'
             ]
         ]);

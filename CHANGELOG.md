@@ -1,3 +1,6 @@
+## v2.0.3
+- Bug fixes
+
 ## v2.0.2
 - Bug fixes and use of long polling instead of webhook
 
