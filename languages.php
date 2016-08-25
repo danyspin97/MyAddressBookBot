@@ -492,7 +492,7 @@ Du kannst Nutzer und Bots zu deinem eigenen Adressbuch hinzufügen indem du den 
 Eine Person oder einen Bot hinzuzufuegen ist einfach. Senden Sie mir eine Nachricht des Kontakts, den du speichern willst oder tippe auf <i>Hinzufügen</i> um sie manuell hinzuzufügen.
 Kontakte die du durch weiterleiten einer Nachricht hinzugefügt hast werden automatisch aktualisiert wenn sie ihren Nutzernamen ändern.
 Tippe auf einen der Knöpfe um zu starten oder drücke auf /help um Hilfe anzuzeigen.',
-    'About_Msg' => 'Ich wurde erstellt mit PHP und Postgresql von @danyspin97.
+    'About_Msg' => 'Ich wurde mit Hilfe von php von @danyspin97 erstellt. Ich basiere auf HadesWrapper und  momentan kann man mich im Raspberry Pi3 vorfinden.
 Alle deine Kontakte werden privat gespeichert und nie weitergegeben.',
     'Help_Msg' => 'Drücke /start um zum Menü zu kommen.
 Leite eine Nachricht weiter und ich werde den Absender speichern.
@@ -605,7 +605,7 @@ $localization['hi'] = [
     'Bot_Title' => '<b>माई अड्रेस बुक बोट</b>',
     'Welcome_Msg' => '  स्वागत है आपका <b>माई अड्रेस बुक बोट</b> में। केवल <i>यूज़रनेम</i> संग्रक्षित कर के आप किसी भी व्यक्ति एवं बोट को अपने अड्रेस बुक में आसानी से डाल सकते हैं। जो यूज़र नेम फॉरवर्ड के द्वारा भेजे जाएंगे वो स्वयं ही अपडेट हो जाएंगे। सारी जानकारी एक सर्वर में संग्रक्षित रहेगी तथा कभी भी किसी के भी साथ बांटी नही जायेगी। शुरू करने के लिए भाषा चुने।',
     'Menu_Msg' => 'स्वागत है आपका <b> माई अड्रेस बुक बोट </b> में। किसी व्यक्ति या बोट को संग्रक्षित करना है आसान। जिस भी व्यक्ति को आप संग्रक्षित करना चाहते हैं, मुझे उसके द्वारा भेजा हुआ कोई भी एक संदेश भेजें। अथवा स्वयं संग्रक्षित करने हेतू <i> एड </i> चुनें। यदि उस व्यक्ति ने अपना यूज़र नेम बदला जिसे फॉरवर्ड के द्वारा संग्रक्षित किया गया है तो वह नाम स्वयं ही अपडेट हो जाएगा । शुरू करने के लिए नीचे दिए गए बटन में से कोई एक चुनें, या फिर मुझे प्रयोग करने की जानकारी के लिए /मदद को चुनें।',
-    'About_Msg' => 'मेरी रचना PHP एवम् Postgresql की सहायता से, @danyspin97 के द्वारा की गई है। आपकी सारी जानकारी एक सर्वर में संग्रक्षित रहेगी तथा कभी भी किसी के भी साथ बांटी नही जायेगी।',
+    'About_Msg' => 'मेरी रचना php की सहायता से @danyspin97 के द्वारा की गयी है। मैं HadesWrapper पे आधारित हूँ तथा अभी Raspberry Pi3 में चल रहा हूँ।',
     'Help_Msg' => 'मेनू पे जाने के लिए /शुरू को चुनें। मुझे एक संदेश भेजें, और मैँ उस व्यक्ति को संग्रक्षित कर लूंगा जिसने आपको वो संदेश भेजा है। किसी व्यक्ति को स्वयं अपने अड्रेस बुक मे संग्रक्षित करने हेतू <i> एड </i> चुनें। यदि आप किसी व्यक्ति को अपनी अड्रेस बुक मे ढूंढना चाहते हैं तो <i>अड्रेस बुक देखें</i> को चुनें।  <i>ऑप्शन</i> को चुन के आप भाषा बदल सकते हैं, अड्रेस बुक में किसी व्यक्ति का यूज़र नेम बदल सकते हैं (यह सेवा उसके लिए काम नही करेगी जिस व्यक्ति को आपने स्वयं अड्रेस बुक में संग्रक्षित किया है) या फिर अपनी पूरी अड्रेस बुक को मिटा अथवा डिलीट कर सकते हैं। यदि बोट अटक जाये य काम करना बंद कर दे तो /शुरू को चुनें (आपके संग्रक्षित सेटिंग या व्यक्ति दोनो ही सुरक्षित रहेंगे)।',
     'ChooseLanguage_Msg' => 'भाषा बदलने के लिए निम्न दिए गए बटन में से एक चुनें।:',
     'AddUsername_Msg' => 'जिस व्यक्ति को आप संग्रक्षित करना चाहते हैं, उसका भेजा हुआ संदेश या यूज़र नेम मुझे @username के रूप में भेजें।',
@@ -679,7 +679,7 @@ $localization['hi'] = [
     'FirstOrder_Button' => '1⃣ प्रथम नाम, अंतिम नाम',
     'SecondOrder_Button' => '2⃣ अंतिम नाम, प्रथम नाम',
     'ThirdOrder_Button' => '3⃣ यूज़र नेम',
-    'Vote_Button' => 'Vote me!',
+    'Vote_Button' => 'मुझे वोट दें।',
     'ContactAdded_AnswerCallback' => 'इस व्यक्ति को संग्रक्षित कर लिया गया है।',
     'Registered_AnswerCallback' => 'रजिस्टर',
     'Options_AnswerCallback' => 'ये ऑप्शन तालिका है',
