@@ -9,8 +9,16 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
     * $text       The text that will replace the info data
     */
    public function updateContactInfo($info, $text) {
+       switch ($info) {
+           case 'description':
+                $end = 49;
+                break;
+           default:
+                $end = 31;
+                break;
+       }
        $sth = $this->pdo->prepare("UPDATE \"Contact\" SET \"$info\" = :info WHERE \"id\" = :id_as AND \"id_owner\" = :chat_id");
-       $sth->bindParam(":info", $text);
+       $sth->bindParam(":info", substr($text, 0, $end));
        $sth->bindParam(':id_as', $this->bot->selected_contact);
        $sth->bindParam(':chat_id', $this->bot->getChatID());
        $sth->execute();
@@ -97,9 +105,9 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
         $sth->bindParam(':id', $row['id']);
         $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->bindParam(':username', $row['username']);
-        $sth->bindParam(':first_name', $row['first_name']);
-        $sth->bindParam(':last_name', $row['last_name']);
-        $sth->bindParam(':desc', $row['desc']);
+        $sth->bindParam(':first_name', substr($row['first_name'], 0, 31));
+        $sth->bindParam(':last_name', substr($row['last_name'], 0, 31));
+        $sth->bindParam(':desc', substr($row['desc'], 0, 49));
         $sth->execute();
         $sth = null;
     }
@@ -107,7 +115,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
     public function &getSearchResults($query) {
         $string = $this->localization[$this->language]['ShowResults_Msg'] . "\"<b>$query</b>\"" . NEWLINE;
         $query = strtolower($query);
-        $sth = $this->pdo->prepare("SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM (SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id) AS T WHERE LOWER(\"first_name\") LIKE '$query%'  OR LOWER(\"first_name\") LIKE '%$query%' OR LOWER(\"last_name\") LIKE '$query%' OR LOWER(\"last_name\") LIKE '%$query%' OR  LOWER(CONCAT_WS(' ', \"first_name\", \"last_name\")) LIKE '$query%' OR LOWER(username) LIKE '$query%' OR LOWER(username) LIKE '%$query%' OR LOWER(username) LIKE '@$query%' OR LOWER(username) LIKE '%@$query%' OR LOWER(CONCAT_WS(' ', \"first_name\", \"last_name\")) LIKE '%$query' OR LOWER(CONCAT_WS(' ', \"last_name\", \"first_name\")) LIKE '$query%' OR LOWER(CONCAT_WS(' ', \"last_name\", \"first_name\")) LIKE '%$query' $ORDER BY " . $this->bot->order);
+        $sth = $this->pdo->prepare("SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM (SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id) AS T WHERE LOWER(\"first_name\") LIKE '$query%'  OR LOWER(\"first_name\") LIKE '%$query%' OR LOWER(\"last_name\") LIKE '$query%' OR LOWER(\"last_name\") LIKE '%$query%' OR  LOWER(CONCAT_WS(' ', \"first_name\", \"last_name\")) LIKE '$query%' OR LOWER(username) LIKE '$query%' OR LOWER(username) LIKE '%$query%' OR LOWER(username) LIKE '@$query%' OR LOWER(username) LIKE '%@$query%' OR LOWER(CONCAT_WS(' ', \"first_name\", \"last_name\")) LIKE '%$query' OR LOWER(CONCAT_WS(' ', \"last_name\", \"first_name\")) LIKE '$query%' OR LOWER(CONCAT_WS(' ', \"last_name\", \"first_name\")) LIKE '%$query' ORDER BY " . $this->bot->order);
         $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->execute();
         $cont = 1;
@@ -121,14 +129,14 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
                         'callback_data' => 'id/' . $row['id'],
                     ]
                 ];
-                $string = $string . $this->bot->getContactInfoByRow($row);
+                $string = $string . $this->bot->getContactInfoByRow($row, false);
                 $displayedrow++;
             } elseif ($displayedrow > 0 && $displayedrow < SPACEPERVIEW) {
                 array_push($usernames, [
                     'text' => '@' . $row['username'],
                     'callback_data' => 'id/' . $row['id'],
                 ]);
-                $string = $string . $this->bot->getContactInfoByRow($row);
+                $string = $string . $this->bot->getContactInfoByRow($row, false);
                 $displayedrow++;
             } elseif ($displayedrow == SPACEPERVIEW) {
                 break;
@@ -162,14 +170,14 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
                         'callback_data' => 'id/' . $row['id'],
                     ]
                 ];
-                $string = $string . $this->bot->getContactInfoByRow($row);
+                $string = $string . $this->bot->getContactInfoByRow($row, false);
                 $displayedrow++;
             } elseif ($displayedrow > 0 && $displayedrow < SPACEPERVIEW) {
                 array_push($usernames, [
                     'text' => '@' . $row['username'],
                     'callback_data' => 'id/' . $row['id'],
                 ]);
-                $string = $string . $this->bot->getContactInfoByRow($row);
+                $string = $string . $this->bot->getContactInfoByRow($row, false);
                 $displayedrow++;
             } elseif ($displayedrow == SPACEPERVIEW) {
                 break;

@@ -196,7 +196,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                     } else {
                                         if ($this->redis->exists($this->chat_id . ':easter_egg')) {
                                             $this->sendMessageRef($this->localization[$this->language]['AddHisSelf_EasterEgg']);
-                                            $this->sendStickerRef(ADDING_HISSELF_STICKER_ID);
+                                            $this->sendSticker(ADDING_HISSELF_STICKER_ID);
                                             $new_message = &$this->sendMessage($this->localization[$this->language]['AddUsername_Msg'], $this->inline_keyboard->getBackInlineKeyboard());
                                             $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
                                             $this->redis->delete($this->chat_id . ':easter_egg');
@@ -424,7 +424,6 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
         $data = $callback_query['data'];
         if (isset($data) && isset($this->chat_id)) {
             $this->getLanguage();
-            echo $data;
             if (isset($message_id)) {
                 switch ($data) {
                     case 'show/ab':
@@ -615,9 +614,9 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             default:
                             $id = $this->database->getContactRowOwnedByUser();
                             if($id > 0) {
-                                $keyboard = &$this->getMenuInlineKeyboard();
+                                $keyboard = &$this->inline_keyboard->getMenuInlineKeyboard();
                             } else {
-                                $keyboard = &$this->getAddInlineKeyboard();
+                                $keyboard = &$this->inline_keyboard->getAddInlineKeyboard();
                             }
                             $this->sendMessage($this->localization[$this->language][$messagetoshow], $keyboard);
                             $this->answerEmptyCallbackQuery();
@@ -823,17 +822,19 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                     $this->answerEmptyCallbackQuery();
                                     break;
                                 case 'as':
-                                    $max = $this->database->getContactRowOwnedByUser();
+                                    $max = $this->database->getContactRowOwnedByUser() ?? 0;
                                     $sth = $this->pdo->prepare('DELETE FROM "Contact" WHERE "id" = :selected_contact AND "id_owner" = :id_owner');
                                     $this->selected_contact = $this->redis->get($this->chat_id . ':selected_contact');
                                     $sth->bindParam(':selected_contact', $this->selected_contact);
                                     $sth->bindParam(':id_owner', $this->chat_id);
                                     $sth->execute();
                                     $sth = null;
-                                    if ($max !== $this->selected_contact) {
+                                    if ($max !== $this->selected_contact && $max != 0) {
                                         $temp = $this->selected->contact;
                                         $this->selected->contact = $max;
-                                        $this->database->updateContactInfo('id', $temp);
+                                        if ($temp != 0) {
+                                            $this->database->updateContactInfo('id', $temp);
+                                        }
                                     }
                                     if(!$this->redis->exists($this->chat_id . ':search_query')) {
                                         $spaces = $this->database->getContactRowOwnedByUser();
@@ -917,9 +918,6 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                     break;
                             }
                         } elseif (strpos($string[0], 'cls') !== false) {
-                            if(isset($this->language)) {
-                                break;
-                            }
                             $this->language = $string[1];
                             $sth = $this->pdo->prepare('INSERT INTO "User" ("chat_id", "language") VALUES (:chat_id, :language)');
                             $sth->bindParam(':chat_id', $this->chat_id);
@@ -1037,6 +1035,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
     }
 
     public function &getABIndexForContact() {
+	$this->getOrder();
         $sth = $this->pdo->prepare("SELECT \"id\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id ORDER BY " . $this->order);
         $sth->bindParam(':chat_id', $this->chat_id);
         $sth->execute();
@@ -1054,7 +1053,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
         return $this->index_addressbook;
     }
 
-    public function &getASInfoByID() {
+    public function &getContactInfoByID() {
         $sth = $this->pdo->prepare('SELECT "username", "first_name", "last_name", "desc" FROM "Contact" WHERE "id" = :id_as AND "id_owner" = :id_owner');
         $sth->bindParam(':id_as', $this->selected_contact);
         $sth->bindParam(':id_owner', $this->chat_id);
@@ -1075,13 +1074,13 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
         return $string;
     }
 
-    public function &getContactInfoByRow(&$row) {
+    public function &getContactInfoByRow(&$row, $show_desc = true) {
         $string = ROUNDS_DOWN . NEWLINE . $this->localization[$this->language]['Username_Msg'] . '@' . $row['username'] . NEWLINE . $this->localization[$this->language]['FirstName_Msg'] . $row['first_name'] . NEWLINE;
         if (isset($row['last_name']) && ($row['last_name'] !== 'NULL')) {
             $string = $string . $this->localization[$this->language]['LastName_Msg'] . $row['last_name'] . NEWLINE;
         }
-        if (isset($row['desc']) && ($row['desc'] !== 'NULL')) {
-        $string = $string . $this->localization[$this->language]['Description_Msg'] . '<i>' . $row['desc'] . '</i>' . NEWLINE;
+        if ($show_desc && isset($row['desc']) && ($row['desc'] !== 'NULL')) {
+        $string = $string . $this->localization[$this->language]['Description_Msg'] . '<i>' . $this->handleUsernameDesc($row['desc']) . '</i>' . NEWLINE;
         }
         $string = $string . '/' . $row['username'] . ' ' . NEWLINE . ROUNDS_UP . NEWLINE;
         return $string;
@@ -1093,13 +1092,11 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
         $string = $string . $this->localization[$this->language]['LastName_Msg'] . $row['last_name'] . NEWLINE;
         }
         if (isset($row['desc']) && ($row['desc'] !== 'NULL')) {
-            $string = $string . $this->localization[$this->language]['Description_Msg'] . '<i>' . $row['desc'] . '</i>' . NEWLINE;
+            $string = $string . $this->localization[$this->language]['Description_Msg'] . '<i>' . $this->handleUsernameDesc($row['desc']) . '</i>' . NEWLINE;
         }
         $string = $string . ROUNDS_UP;
         return $string;
     }
-
-
 
     private function &getOrderString($order_number) {
         switch ($order_number) {
@@ -1128,8 +1125,8 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
             $row = $sth->fetch();
             $sth = null;
             $this->redis->setEx($this->chat_id . ':order', 86400, $row['order']);
-            $this->order = &$row['order'];
-            return $this->getOrderString($row['order']);
+            $this->order = $this->getOrderString($row['order']);
+            return $this->order;
         }
     }
 
@@ -1166,5 +1163,19 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
             $this->index_addressbook = 1;
             return 1;
         }
+    }
+
+    public function &handleUsernameDesc(&$string) {
+        $usernames = FALSE;
+        preg_match_all("/(@\w+)/u", $string, $matches);
+        if ($matches) {
+            $usernamesArray = array_count_values($matches[0]);
+            $usernames = array_keys($usernamesArray);
+        }
+        $count = count($usernames);
+        for($i = 0; $i < $count; $i++) {
+            $string = str_replace($usernames[$i], '</i>' . $usernames[$i] . '<i>', $string);
+        }
+        return $string;
     }
 }

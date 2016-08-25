@@ -1,3 +1,8 @@
+## v2.0.4
+- Now the contact description is shown only on contact info after selecting it
+- Now the username in the contact description don't have italic formattation, letting the user click them on telegram message
+- Bug fixes
+
 ## v2.0.3
 - Bug fixes
 

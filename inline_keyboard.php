@@ -236,25 +236,25 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
 
     public function &getChooseLanguageInlineKeyboard() {
         $inline_keyboard = ['inline_keyboard' => array()];
-        foreach($this->bot->localization['launguages'] as $this->bot->languages => $this->bot->language_msg) {
-            if ($this->bot->language_msg === $this->bot->localization[$this->bot->language]['Language']) {
+        foreach($this->bot->localization['launguages'] as $languages => $language_msg) {
+            if (strpos($languages, $this->bot->language) !== false) {
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
-                        'text' => &$this->bot->language_msg,
+                        'text' => $language_msg,
                         'callback_data' => 'same/language'
                     ]
                 ]);
             } else {
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
-                        'text' => $this->bot->language_msg . '/' . $this->bot->localization[$this->bot->language][$this->bot->languages],
-                        'callback_data' => 'cl/' . $this->bot->languages
+                        'text' => $language_msg . '/' . $this->bot->localization[$this->bot->language][$languages],
+                        'callback_data' => 'cl/' . $languages
                     ]
                 ]);
             }
         }
-        unset($this->bot->languages);
-        unset($this->bot->language_msg);
+        unset($languages);
+        unset($language_msg);
         array_push($inline_keyboard['inline_keyboard'], [
             [
                 'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],

@@ -28,8 +28,7 @@ Tap <i>Add</i> to manually add a contact to your address book.
 Tap <i>Browse AddressBook</i> too see or search your contacts if you have any.
 Tap <i>Options</i> you can change language, update usernames in your address book(doesn\'t work with contact added manually) or delete all your address book.
 If the bot is stucked just click /start to restart it(you won\'t lose contacts neither settings).',
-    'ChooseLanguage_Msg' => 'Choose your language by tapping one of the button below:
-(Some languages have been removed for now because they are under revision, they will be back as soon as possible)',
+    'ChooseLanguage_Msg' => 'Choose your language by tapping one of the button below:',
     'AddUsername_Msg' => 'Forward me the message of the contact you want to save or send me the username in the form <pre>@username.</pre>',
     'AddFirstName_Msg' => 'Send me the <b>first name</b>.',
     'AddLastName_Msg' => 'Send me the <b>last name</b> or tap <i>skip</i>',
@@ -147,8 +146,7 @@ Premi <i>Sfoglia rubrica</i> per sfogliare i tuoi contatti o fare una ricerca.
 Premi <i>Opzioni</i> per cambiare la lingua, aggiornare gli username dei tuoi contatti(non funziona con i contatti aggiunti manualmente) o eliminare tutta la tua rubrica.
 Se il bot si è bloccato stucked clicca /start per ripartire il bot(non perderai nè i contatti nè le impostazioni).',
     'About_Msg' => 'Sono stato creato da @danyspin97 utilizzando PHP e Postgresql.',
-    'ChooseLanguage_Msg' => 'Scegli la tua lingua cliccando su uno dei pulsanti qui in basso:
-(Qualche lingua è stata momentaneamente rimossa causa revisione, sarà disponibile il prima possibile)',
+    'ChooseLanguage_Msg' => 'Scegli la tua lingua cliccando su uno dei pulsanti qui in basso:',
     'AddUsername_Msg' => 'Inoltrami il messaggio dell\'utente che vuoi salvare nella tua rubrica oppure inviami l\'username nella forma <pre>@username.</pre>',
     'AddFirstName_Msg' => 'Inviami il <b>nome</b>.',
     'AddLastName_Msg' => 'Inviami il <b>cognome</b> o premi <i>Salta</i>',
@@ -457,6 +455,7 @@ $localization['ru'] = [
     'FirstOrder_Button' => '1⃣ Имя, фамилия',
     'SecondOrder_Button' => '2⃣ Фамилия, имя',
     'ThirdOrder_Button' => '3⃣ Никнейм',
+    'Vote_Button' => 'Vote me!',
     'ContactAdded_AnswerCallback' => 'Контакт был добавлен',
     'Registered_AnswerCallback' => 'Зарегистрирован',
     'Options_AnswerCallback' => 'Доступные настройки',
@@ -573,6 +572,7 @@ Wenn der Bot nicht reagiert drücke auf /start um den bot neu zu starten (Weder 
     'FirstOrder_Button' => '1⃣ Vorname, Nachname',
     'SecondOrder_Button' => '2⃣ Nachname, Vorname',
     'ThirdOrder_Button' => '3⃣ Nutzername',
+    'Vote_Button' => 'Vote me!',
     'ContactAdded_AnswerCallback' => 'Der Kontakt wurde hinzugefügt',
     'Registered_AnswerCallback' => 'registriert',
     'Options_AnswerCallback' => 'Hier sind die Möglichkeiten',
@@ -679,6 +679,7 @@ $localization['hi'] = [
     'FirstOrder_Button' => '1⃣ प्रथम नाम, अंतिम नाम',
     'SecondOrder_Button' => '2⃣ अंतिम नाम, प्रथम नाम',
     'ThirdOrder_Button' => '3⃣ यूज़र नेम',
+    'Vote_Button' => 'Vote me!',
     'ContactAdded_AnswerCallback' => 'इस व्यक्ति को संग्रक्षित कर लिया गया है।',
     'Registered_AnswerCallback' => 'रजिस्टर',
     'Options_AnswerCallback' => 'ये ऑप्शन तालिका है',
