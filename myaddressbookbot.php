@@ -1023,7 +1023,6 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
     }
 
     protected function processInlineResult() {
-        echo "FHBAUHFIu";
         $chosen_inline_result = &$this->update['chosen_inline_result'];
         $this->chat_id = &$inline_result['from']['id'];
         $this->getLanguage();
