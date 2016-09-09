@@ -1,3 +1,6 @@
+##v2.0.7
+- Removed try/catch
+
 ##v2.0.6
 - Added try/catch in adjustOffset.php
 - Varius fixes

@@ -4,7 +4,7 @@ redis-cli set error 0
 while true
   php adjustOffset.php
   set error (redis-cli get error)
-  while math "$error==1" > /dev/null
+  if math "$error==1" > /dev/null
     redis-cli incr offset
     php adjustOffset.php
   end
