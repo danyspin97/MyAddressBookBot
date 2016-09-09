@@ -598,6 +598,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             case ADDING_DESC_MENU:
                                 $this->selected_contact = $this->database->getContactRowOwnedByUser();
                                 $this->selected_contact++;
+				//$this->database->checkIDUsed();
                                 $row = $this->redis->hGetAll($this->chat_id . ':contact');
                                 $row['id'] = &$this->selected_contact;
                                 $row['description'] = 'NULL';
@@ -830,8 +831,8 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                     $sth->execute();
                                     $sth = null;
                                     if ($max !== $this->selected_contact && $max != 0) {
-                                        $temp = $this->selected->contact;
-                                        $this->selected->contact = $max;
+                                        $temp = $this->selected_contact;
+                                        $this->selected_contact = $max;
                                         if ($temp != 0) {
                                             $this->database->updateContactInfo('id', $temp);
                                         }
@@ -1018,7 +1019,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
             $sth = null;
             $this->answerInlineQuerySwitchPMRef($results->getResults(), $this->localization[$this->language]['SwitchPM_InlineQuery'], 'show/ab');
         } else {
-            $this->answerEmptyInlineQuerySwitchPMRef($this->localization[$this->language]['Register_InlineQuery']);
+            $this->answerEmptyInlineQuerySwitchPM($this->localization[$this->language]['Register_InlineQuery']);
         }
     }
 

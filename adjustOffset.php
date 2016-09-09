@@ -21,5 +21,9 @@ $bot->setLocalization($localization);
 $bot->setDatabase(new Database($driver, $dbname, $user, $password, $bot));
 $bot->connectToRedis();
 $bot->inline_keyboard = new InlineKeyboard($bot);
-$bot->adjustOffsetRedis();
+try {
+    $bot->adjustOffsetRedis();
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
 $bot = null;

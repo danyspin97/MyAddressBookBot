@@ -1,3 +1,7 @@
+##v2.0.6
+- Added try/catch in adjustOffset.php
+- Varius fixes
+
 ##v2.0.5
 - The bot is now using getUpdatesLocal instead of getUpdatesRedis
 - Bug fixes

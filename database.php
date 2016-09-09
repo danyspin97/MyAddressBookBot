@@ -219,4 +219,14 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
             $list++;
         return $list;
     }
+
+    public function checkIDUsed() {
+        $sth = $this->pdo->prepare('SELECT DINSTICT ("id") FROM "Contact") WHERE "chat_id" = :chat_id');
+        $sth->bindParam(':chat_id', $this->bot->chat_id);
+        $sth->execute();
+        $ids = $sth->fetch();
+        while(in_array($this->bot->selected_contact, $ids)) {
+            $this->bot->selected_contact++;
+        }
+    }
 }
