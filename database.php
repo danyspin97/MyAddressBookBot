@@ -96,6 +96,16 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
    }
 
     public function saveContact(&$row) {
+        if (!$this->isUserRegistered()) {
+            $sth = $this->pdo->prepare('INSERT INTO "User" ("chat_id") VALUES (:chat_id)');
+            $sth->bindParam(':chat_id', $this->bot->chat_id);
+            $sth->execute();
+            $sth = null;
+            $this->bot->redis->setEx($this->bot->chat_id . ':language', 86400, 'en');
+            $this->bot->redis->set($this->bot->chat_id . ':status', MENU);
+            $this->bot->redis->set($this->bot->chat_id . ':index_addressbook', 1);
+            $this->bot->redis->set($this->bot->chat_id . ':easter_egg', 1);
+        }
         if (isset($row['id_contact']) && $row['id_contact'] !== 'NULL') {
             $sth = $this->pdo->prepare('INSERT INTO "Contact" ("id", "id_owner", "id_contact", "username", "first_name", "last_name", "desc") VALUES (:id, :chat_id, :id_contact, :username, :first_name, :last_name, :desc)');
             $sth->bindValue(':id_contact', $row['id_contact'], PDO::PARAM_INT);

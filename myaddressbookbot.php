@@ -920,11 +920,13 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             }
                         } elseif (strpos($string[0], 'cls') !== false) {
                             $this->language = $string[1];
-                            $sth = $this->pdo->prepare('INSERT INTO "User" ("chat_id", "language") VALUES (:chat_id, :language)');
-                            $sth->bindParam(':chat_id', $this->chat_id);
-                            $sth->bindParam(':language', $this->language);
-                            $sth->execute();
-                            $sth = null;
+                            if(!$this->database->isUserRegistered()) {
+                                $sth = $this->pdo->prepare('INSERT INTO "User" ("chat_id", "language") VALUES (:chat_id, :language)');
+                                $sth->bindParam(':chat_id', $this->chat_id);
+                                $sth->bindParam(':language', $this->language);
+                                $sth->execute();
+                                $sth = null;
+                            }
                             $this->editMessageTextKeyboard($this->localization[$this->language]['Menu_Msg'], $this->inline_keyboard->getAddInlineKeyboard(), $message_id);
                             $this->answerCallbackQueryRef($this->localization[$this->language]['Registered_AnswerCallback']);
                             $this->redis->setEx($this->chat_id . ':language', 86400, $this->language);
