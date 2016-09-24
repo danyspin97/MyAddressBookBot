@@ -1,11 +1,11 @@
 <?php
 
 require './vendor/autoload.php';
-require 'myaddressbookbot.php';
-require 'database.php';
-require 'inline_keyboard.php';
-require 'languages.php';
-require 'data.php';
+require 'lib/myaddressbookbot/myaddressbookbot.php';
+require 'lib/myaddressbookbot/database.php';
+require 'lib/myaddressbookbot/inline_keyboard.php';
+require 'lib/myaddressbookbot/languages.php';
+require 'lib/myaddressbookbot/data.php';
 
 /*
  * Main script of the Bot

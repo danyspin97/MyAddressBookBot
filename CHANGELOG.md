@@ -1,3 +1,10 @@
+##v2.1.0
+- Added ci
+- Reworked structure
+- Added Site and Source button in about
+- About and help message have a button for going to menu
+- Bug fixes
+
 ##v2.0.7
 - Removed try/catch
 

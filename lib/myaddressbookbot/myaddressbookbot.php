@@ -142,11 +142,16 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                 }
             } elseif (strpos($text, '/help') === 0) {
                 // Send help message
-                $this->sendMessage($this->localization[$this->language]['Help_Msg']);
+                $this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
+                $this->sendMessageKeyboard($this->localization[$this->language]['Help_Msg'], $this->inline_keyboard->getKeyboard());
+                $this->redis->set($this->chat_id . ':status', MENU);
             } elseif (strpos($text, '/about') === 0) {
                 // Send about message
+                $this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Site_Button'], 'url' => 'https://danyspin97.gitlab.io/MyAddressBookBot/'], ['text' => &$this->localization[$this->language]['Source_Button'], 'url' => 'https://gitlab.com/danyspin97/MyAddressBookBot']);
                 $this->inline_keyboard->addLevelButtons(['text' => $this->localization[$this->language]['Vote_Button'], 'url' => 'https://telegram.me/storebot?start=myaddressbookbot'], ['text' => 'HadesWrapper', 'url' => 'https://gitlab.com/WiseDragonStd/HadesWrapper']);
+                $this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
                 $this->sendMessageKeyboard($this->localization[$this->language]['About_Msg'], $this->inline_keyboard->getKeyboard());
+                $this->redis->set($this->chat_id . ':status', MENU);
             } elseif (strpos($text, '/') === 0 && strlen($text) > 5) {
                 if($this->redis->exists($this->chat_id . ':search_query')) {
                     $this->redis->delete($this->chat_id . ':search_query');
@@ -456,7 +461,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             $keyboard = &$this->inline_keyboard->getAddInlineKeyboard();
                         }
                         $this->editMessageTextKeyboard($this->localization[$this->language]['Menu_Msg'], $keyboard, $message_id);
-                        $this->redis->set($this->chat_id . ':status', SHOW_AB);
+                        $this->redis->set($this->chat_id . ':status', MENU);
                         $this->redis->delete($this->chat_id . ':selected_contact');
                         $this->answerEmptyCallbackQuery();
                         break;
@@ -598,7 +603,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             case ADDING_DESC_MENU:
                                 $this->selected_contact = $this->database->getContactRowOwnedByUser();
                                 $this->selected_contact++;
-				//$this->database->checkIDUsed();
+				$this->database->checkIDUsed();
                                 $row = $this->redis->hGetAll($this->chat_id . ':contact');
                                 $row['id'] = &$this->selected_contact;
                                 $row['description'] = 'NULL';
@@ -613,16 +618,28 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                 $this->answerCallbackQueryRef($this->localization[$this->language]['ContactAdded_AnswerCallback']);
                                 break;
                             default:
-                            $id = $this->database->getContactRowOwnedByUser();
-                            if($id > 0) {
-                                $keyboard = &$this->inline_keyboard->getMenuInlineKeyboard();
-                            } else {
-                                $keyboard = &$this->inline_keyboard->getAddInlineKeyboard();
-                            }
-                            $this->sendMessage($this->localization[$this->language][$messagetoshow], $keyboard);
-                            $this->answerEmptyCallbackQuery();
+                                $id = $this->database->getContactRowOwnedByUser();
+                                if($id > 0) {
+                                    $keyboard = &$this->inline_keyboard->getMenuInlineKeyboard();
+                                } else {
+                                    $keyboard = &$this->inline_keyboard->getAddInlineKeyboard();
+                                }
+                                $this->sendMessage($this->localization[$this->language][$messagetoshow], $keyboard);
+                                $this->answerEmptyCallbackQuery();
                             break;
                         }
+                        break;
+                    case 'help':
+                        $this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
+                        $this->editMessageTextKeyboard($this->localization[$this->language]['Help_Msg'], $this->inline_keyboard->getKeyboard(), $message_id);
+                        $this->redis->set($this->chat_id . ':status', MENU);
+                        break;
+                    case 'about':
+                        //$this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Site_Button'], 'url' => ''], ['text' => &$this->localization[$this->language]['Source_Button'], 'url' => 'https://gitlab.com/danyspin97/MyAddressBookBot']);
+                        $this->inline_keyboard->addLevelButtons(['text' => $this->localization[$this->language]['Vote_Button'], 'url' => 'https://telegram.me/storebot?start=myaddressbookbot'], ['text' => 'HadesWrapper', 'url' => 'https://gitlab.com/WiseDragonStd/HadesWrapper']);
+                        $this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
+                        $this->editMessageTextKeyboard($this->localization[$this->language]['About_Msg'], $this->inline_keyboard->getKeyboard(), $message_id);
+                        $this->redis->set($this->chat_id . ':status', MENU);
                         break;
                     case 'options/menu':
                         $status2 = OPTIONS;

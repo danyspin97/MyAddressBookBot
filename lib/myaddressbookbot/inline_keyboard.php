@@ -26,14 +26,22 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
                     [
                         'text' => &$this->bot->localization[$this->bot->language]['Add_Button'],
                         'callback_data' => 'add'
+                    ],
+                    [
+                        'text' => &$this->bot->localization[$this->bot->language]['BrowseAB_Button'],
+                        'callback_data' => 'show/ab'
                     ]
                 ]
             ]
         ];
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => &$this->bot->localization[$this->bot->language]['BrowseAB_Button'],
-                'callback_data' => 'show/ab'
+                'text' => &$this->bot->localization[$this->bot->language]['Help_Button'],
+                'callback_data' => 'help'
+            ],
+            [
+                'text' => &$this->bot->localization[$this->bot->language]['About_Button'],
+                'callback_data' => 'about'
             ]
         ]);
         array_push($inline_keyboard['inline_keyboard'], [
@@ -171,23 +179,19 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
                     [
                         'text' => &$this->bot->localization[$this->bot->language]['Language_Button'],
                         'callback_data' => 'language'
-                    ]
+                    ],
+                    [
+                        'text' => &$this->bot->localization[$this->bot->language]['UpdateAll_Button'],
+                        'callback_data' => 'update/all'
+                    ],
                 ]
             ]
         ];
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => &$this->bot->localization[$this->bot->language]['UpdateAll_Button'],
-                'callback_data' => 'update/all'
-            ],
-        ]);
-        array_push($inline_keyboard['inline_keyboard'], [
-            [
                 'text' => &$this->bot->localization[$this->bot->language]['Order_Button'],
                 'callback_data' => 'order'
             ],
-        ]);
-        array_push($inline_keyboard['inline_keyboard'], [
             [
                 'text' => &$this->bot->localization[$this->bot->language]['DeleteAll_Button'],
                 'callback_data' => 'delete/allprompt'

@@ -18,7 +18,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
                 break;
        }
        $sth = $this->pdo->prepare("UPDATE \"Contact\" SET \"$info\" = :info WHERE \"id\" = :id_as AND \"id_owner\" = :chat_id");
-       $sth->bindParam(":info", substr($text, 0, $end));
+       $sth->bindParam(":info", mb_substr($text, 0, $end));
        $sth->bindParam(':id_as', $this->bot->selected_contact);
        $sth->bindParam(':chat_id', $this->bot->getChatID());
        $sth->execute();
@@ -61,7 +61,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
    }
 
    /*
-    * Check if in the address book of the user (identified by $this->bot->chat_id) there is a
+    * Check if in the address book of the user (identified by $this->bot->getChatID()) there is a
     * contact that has $username as username, or, if there isn't, check if there is a user with the same $id_contact (it means he is the same user and he just changed username)
     */
    public function checkContactExist(&$username, $id_contact = -3) {
@@ -80,7 +80,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
 
    }
 
-   // Return the username of a contact by passing the $this->bot->chat_id of the owner and the $id of the contact
+   // Return the username of a contact by passing the $this->bot->getChatID() of the owner and the $id of the contact
    public function getUsernameFromID() {
        $sth = $this->pdo->prepare('SELECT "username" FROM "Contact" WHERE "id_owner" = :chat_id AND "id" = :selected_contact');
        $sth->bindParam(':selected_contact', $this->bot->selected_contact);
@@ -96,15 +96,18 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
    }
 
     public function saveContact(&$row) {
+        //while($this->exist("Contact", ['id' => &$row['id'], 'owner_id' => &$this->bot->getChatID()])) {
+        //    $row['id']++;
+        //}
         if (!$this->isUserRegistered()) {
             $sth = $this->pdo->prepare('INSERT INTO "User" ("chat_id") VALUES (:chat_id)');
-            $sth->bindParam(':chat_id', $this->bot->chat_id);
+            $sth->bindParam(':chat_id', $this->bot->getChatID());
             $sth->execute();
             $sth = null;
-            $this->bot->redis->setEx($this->bot->chat_id . ':language', 86400, 'en');
-            $this->bot->redis->set($this->bot->chat_id . ':status', MENU);
-            $this->bot->redis->set($this->bot->chat_id . ':index_addressbook', 1);
-            $this->bot->redis->set($this->bot->chat_id . ':easter_egg', 1);
+            $this->bot->redis->setEx($this->bot->getChatID() . ':language', 86400, 'en');
+            $this->bot->redis->set($this->bot->getChatID() . ':status', MENU);
+            $this->bot->redis->set($this->bot->getChatID() . ':index_addressbook', 1);
+            $this->bot->redis->set($this->bot->getChatID() . ':easter_egg', 1);
         }
         if (isset($row['id_contact']) && $row['id_contact'] !== 'NULL') {
             $sth = $this->pdo->prepare('INSERT INTO "Contact" ("id", "id_owner", "id_contact", "username", "first_name", "last_name", "desc") VALUES (:id, :chat_id, :id_contact, :username, :first_name, :last_name, :desc)');
@@ -115,10 +118,14 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
         $sth->bindParam(':id', $row['id']);
         $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->bindParam(':username', $row['username']);
-        $sth->bindParam(':first_name', substr($row['first_name'], 0, 31));
-        $sth->bindParam(':last_name', substr($row['last_name'], 0, 31));
-        $sth->bindParam(':desc', substr($row['desc'], 0, 49));
-        $sth->execute();
+        $sth->bindParam(':first_name', mb_substr($row['first_name'], 0, 31));
+        $sth->bindParam(':last_name', mb_substr($row['last_name'], 0, 31));
+        $sth->bindParam(':desc', mb_substr($row['desc'], 0, 49));
+        try {
+            $sth->execute();
+        } catch (PDOException $e) {
+            echo $e.getMessage();
+        }
         $sth = null;
     }
 
@@ -231,8 +238,8 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
     }
 
     public function checkIDUsed() {
-        $sth = $this->pdo->prepare('SELECT DINSTICT ("id") FROM "Contact") WHERE "chat_id" = :chat_id');
-        $sth->bindParam(':chat_id', $this->bot->chat_id);
+        $sth = $this->pdo->prepare('SELECT ("id") FROM "Contact" WHERE "chat_id" = :chat_id');
+        $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->execute();
         $ids = $sth->fetch();
         while(in_array($this->bot->selected_contact, $ids)) {
