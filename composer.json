@@ -31,5 +31,5 @@
         "psr-4": {
             "DanySpin97\\MyAddressBookBot\\": ["lib/myaddressbookbot"]
         }
-    },
+    }
 }
