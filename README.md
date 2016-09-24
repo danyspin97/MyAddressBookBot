@@ -2,7 +2,7 @@
 [![Bot Status](https://img.shields.io/badge/bot-active-brightgreen.svg?style=plastic)]()
 [![Build Status](https://img.shields.io/badge/build-2.0-green.svg?style=plastic)]()
 [![License](https://img.shields.io/badge/license-GNU_AGPLv3-blue.svg?style=plastic)]()
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4879f54e9f2f4d61a68355ef8f196ea6)](https://www.codacy.com/app/danyspin97/MyAddressBookBot?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=danyspin97/MyAddressBookBot&amp;utm_campaign=Badge_Grade)o
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4879f54e9f2f4d61a68355ef8f196ea6)](https://www.codacy.com/app/danyspin97/MyAddressBookBot?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=danyspin97/MyAddressBookBot&amp;utm_campaign=Badge_Grade)
 
 MyAddressBookBot is a Telegram Bot that works as an address book of usernames for Telegram Messanger.
 

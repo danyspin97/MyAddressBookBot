@@ -26,7 +26,7 @@
     "suggest": {
         "ext-mysql": "*",
         "ext-pgsql": "*"
-    }
+    },
     "autoload": {
         "psr-4": {
             "DanySpin97\\MyAddressBookBot\\": ["lib/myaddressbookbot"]

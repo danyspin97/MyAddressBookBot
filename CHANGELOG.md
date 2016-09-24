@@ -1,18 +1,18 @@
-##v2.1.0
+## v2.1.0
 - Added ci
 - Reworked structure
-- Added Site and Source button in about
+- Added Site and Source button in about message
 - About and help message have a button for going to menu
 - Bug fixes
 
-##v2.0.7
+## v2.0.7
 - Removed try/catch
 
-##v2.0.6
+## v2.0.6
 - Added try/catch in adjustOffset.php
 - Varius fixes
 
-##v2.0.5
+## v2.0.5
 - The bot is now using getUpdatesLocal instead of getUpdatesRedis
 - Bug fixes
 
