@@ -3,8 +3,6 @@ image: ruby:2.3
 pages:
   script:
   - gem install jekyll
-  - gem install jekyll-paginate
-  - gem install plugin_manager
   - jekyll build -d public/
   artifacts:
     paths:
