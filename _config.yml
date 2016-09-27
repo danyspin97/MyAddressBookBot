@@ -4,7 +4,7 @@
 # baseurl is the website's URL without the hostname
 
 # If you are building a simple GitHub user page (http://username.github.io) then use these settings:
-url: "https://telegram.me/MyAddressBookBot" #"http://DanySpin97.gitlab.io/MyAddressBookBot"
+url: "http://DanySpin97.gitlab.io/MyAddressBookBot"
 baseurl: "/MyAddressBookBot"
 
 # If you are building a GitHub project page then use these settings:
@@ -23,7 +23,8 @@ description: Discover MyAddressBookBot, a Telegram Bot!
 
 # List of links in the navigation bar
 navbar-links:
-  Author's home: "https://DanySpin97.gitlab.com/"
+  Start it!: "https://telegram.me/MyAddressBookBot"
+  Author's home: "https://DanySpin97.gitlab.io/"
   Resources:
     - Source: "https://gitlab.com/DanySpin97/MyAddressBookBot.git"
     - HadesWrapper: "https://gitlab.com/WiseDragonStd/HadesWrapper.git"

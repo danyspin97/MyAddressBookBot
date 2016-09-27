@@ -7,7 +7,7 @@ subtitle: Your personal address book on telegram
 # Description
 MyAddressBookBot is a Telegram Bot that works as an address book of usernames for Telegram Messanger.
 
-Telegram address book saves contacts by telephone number, but most users use the username to get in touch with people on this IM. This bot save contacts by username and let the user modify the basic info. Plus it update the username of contacts everyday so you'll never lose them.
+Telegram address book saves contacts by telephone number, but most users use the username to get in touch with people on this IM. This bot save contacts by username and let the user modify the basic info. Plus it updates the username of contacts everyday so you'll never lose them.
 
 ## Screenshots
 [![screenshot_menu](screenshot_menu.png)]()
@@ -22,6 +22,10 @@ Telegram address book saves contacts by telephone number, but most users use the
 - Search in the address book
 - Choose order of contacts (by first name, lastname or username)
 - Share using inline queries
+
+## Statistics
+- <b>Users registered: <i>813</i></b>
+- <b>Contacts saved: <i>1300</i></b> 
 
 ## Current translations
 - English
