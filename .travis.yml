@@ -2,17 +2,12 @@ dist: trusty
 sudo: required
 language: php
 
-addons:
-  apt:
-    packages:
-      - mysql-server-5.6
-      - mysql-client-core-5.6
-      - mysql-client-5.6
-      - redis-server-3.2
-      - redis-client-3.2
-
 php:
   - '7.0'
+
+services:
+  - mysql
+  - redis-server
 
 cache:
   directories:
@@ -23,7 +18,7 @@ notifications:
   on_failure: always
 
 before_script:
-  - mysql -u root -e 'create database hello_world_test; use hello_world_test;'
+  - mysql -u travis -e 'create database hello_world_test; use hello_world_test;'
 
 before_install: phpenv config-add phpconfig.ini
 
