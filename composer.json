@@ -5,12 +5,11 @@
     "type": "project",
     "license": "AGPL-3.0+",
     "keywords": ["telegram", "bot", "telegram-bot", "myaddressbookbot"],
-    "homepage": "https://gitlab.com/danyspin97/MyAddressBookBot",
+    "homepage": "https://DanySpin97.github.io/MyAddressBookBot",
     "minimum-stability": "dev",
     "authors": [
         {
-            "name": "Dany Spin",
-            "homepage": "https://gitlab.com/u/danyspin97",
+            "name": "Danilo Spinella",
             "role": "Developer"
         }
     ],
