@@ -4,7 +4,7 @@
 # baseurl is the website's URL without the hostname
 
 # If you are building a simple GitHub user page (http://username.github.io) then use these settings:
-url: "http://DanySpin97.gitlab.io/MyAddressBookBot"
+url: "http://DanySpin97.github.io/MyAddressBookBot"
 baseurl: "/MyAddressBookBot"
 
 # If you are building a GitHub project page then use these settings:
@@ -24,10 +24,10 @@ description: Discover MyAddressBookBot, a Telegram Bot!
 # List of links in the navigation bar
 navbar-links:
   Start it!: "https://telegram.me/MyAddressBookBot"
-  Author's home: "https://DanySpin97.gitlab.io/"
+  #Author's home: "https://DanySpin97.gitlab.io/"
   Resources:
-    - Source: "https://gitlab.com/DanySpin97/MyAddressBookBot.git"
-    - HadesWrapper: "https://gitlab.com/WiseDragonStd/HadesWrapper.git"
+    - Source: "https://github.com/DanySpin97/MyAddressBookBot.git"
+    #- HadesWrapper: "https://gitlab.com/WiseDragonStd/HadesWrapper.git"
 
 # Image to show in the navigation bar - image must be a square (width = height)
 # Remove this parameter if you don't want an image in the navbar
@@ -40,7 +40,8 @@ avatar: "/img/avatar-icon.png"
 author:
   name: Danilo Spinella
   email: "danyspin.ds@gmail.com"
-  twitter: DanySpin97   # eg. daattali
+  twitter: DanySpin97
+  github: DanySpin97
 
 # Select which links to show in the footer
 footer-links-active:
@@ -49,7 +50,7 @@ footer-links-active:
   email: true
   twitter: true
   google-plus: false
-  github: false
+  github: true
   linkedin: false
   xing: false
   stackoverflow: false
@@ -67,7 +68,7 @@ share-links-active:
 
 # How to display the link to the website in the footer
 # Remove this if you don't want a link in the footer
-url-pretty: "DanySpin97.gitlab.io/MyAddressBookBot"  # eg. "deanattali.com/beautiful-jekyll"
+url-pretty: "DanySpin97.github.io/MyAddressBookBot"  # eg. "deanattali.com/beautiful-jekyll"
 
 # --- Misc --- #
 

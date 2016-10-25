@@ -24,8 +24,8 @@ Telegram address book saves contacts by telephone number, but most users use the
 - Share using inline queries
 
 ## Statistics
-- <b>Users registered: <i>813</i></b>
-- <b>Contacts saved: <i>1300</i></b> 
+- <b>Users registered: </b><i>813</i>
+- <b>Contacts saved: </b><i>1300</i>
 
 ## Current translations
 - English
@@ -37,7 +37,7 @@ Telegram address book saves contacts by telephone number, but most users use the
 - Hindi
 
 ## Technical
-This bot uses the official Telegram Bot API(v2.1), it is based on [HadesWrapper](https://gitlab.com/WiseDragonStd/HadesWrapper) for Telegram and runs on a Raspberry Pi3 using php, Redis and Postgresql:
+This bot uses the official Telegram Bot API(v2.1), it is based on HadesWrapper for Telegram and runs on a Raspberry Pi3 using php, Redis and Postgresql.
 
 ## License
 MyAddressBookBot is released under the GNU Affero General Public License.
