@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Beautiful Jekyll | MIT license | Copyright Dean Attali 2016 -->
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>MyAddressBookBot</title>
+
+  <meta name="author" content="Danilo Spinella" />
+  
+  
+  <meta name="description" content="Your personal address book on telegram">
+  
+
+  <link rel="alternate" type="application/rss+xml" title="MyAddressBookBot - Discover MyAddressBookBot, a Telegram Bot!" href="/MyAddressBookBot/feed.xml" />
+
+  
+    
+      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" />
+    
+      
+  
+  
+    
+      <link rel="stylesheet" href="/MyAddressBookBot/css/bootstrap.min.css" />
+    
+      <link rel="stylesheet" href="/MyAddressBookBot/css/bootstrap-social.css" />
+    
+      <link rel="stylesheet" href="/MyAddressBookBot/css/main.css" />
+    
+    
+  
+  
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+    
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+    
+  
+
+    
+  
+  
+
+  
+
+  <!-- Facebook OpenGraph tags -->
+  <meta property="og:title" content="MyAddressBookBot" />
+  <meta property="og:type" content="website" />
+  
+  <meta property="og:url" content="http://DanySpin97.github.io/MyAddressBookBot/" />
+  
+  
+  <meta property="og:image" content="http://DanySpin97.github.io/MyAddressBookBot/img/avatar-icon.png" />
+  
+  
+  <!-- Twitter summary cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@DanySpin97" />
+  <meta name="twitter:creator" content="@DanySpin97" />
+  <meta name="twitter:title" content="MyAddressBookBot" />
+  <meta name="twitter:description" content="# Description MyAddressBookBot is a Telegram Bot that works as an address book of usernames for Telegram Messanger. Telegram address book saves contacts by telephone number, but most users use the username to get in touch with people on this IM. This bot save contacts by username and let the..." />
+  
+  <meta name="twitter:image" content="http://DanySpin97.github.io/MyAddressBookBot/img/avatar-icon.png" />
+  
+  
+</head>
+
+
+  <body>
+  
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://DanySpin97.github.io/MyAddressBookBot">MyAddressBookBot</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+            
+            
+
+
+
+
+
+<a href="https://telegram.me/MyAddressBookBot">Start it!</a>
+
+          </li>
+        
+        
+        
+          <li class="navlinks-container">
+            <a class="navlinks-parent" href="javascript:void(0)">Resources</a>
+            <div class="navlinks-children">
+              
+                
+                  
+            
+
+
+
+
+
+<a href="https://github.com/DanySpin97/MyAddressBookBot.git">Source</a>
+
+                
+              
+            </div>
+          </li>
+        
+        
+      </ul>
+    </div>
+
+	
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+	    <a href="http://DanySpin97.github.io/MyAddressBookBot ">
+	      <img class="avatar-img" src="/MyAddressBookBot/img/avatar-icon.png" />
+		</a>
+	  </div>
+	</div>
+	
+
+  </div>
+</nav>
+
+
+    <!-- TODO this file has become a mess, refactor it -->
+
+
+
+
+
+<header class="header-section ">
+
+<div class="intro-header no-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-heading">
+          <h1>MyAddressBookBot</h1>
+		  
+		    
+            <hr class="small">
+            <span class="page-subheading">Your personal address book on telegram</span>
+			
+		  
+		  
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+
+
+
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <h1 id="description">Description</h1>
+<p>MyAddressBookBot is a Telegram Bot that works as an address book of usernames for Telegram Messanger.</p>
+
+<p>Telegram address book saves contacts by telephone number, but most users use the username to get in touch with people on this IM. This bot save contacts by username and let the user modify the basic info. Plus it updates the username of contacts everyday so you’ll never lose them.</p>
+
+<h2 id="screenshots">Screenshots</h2>
+<p><a href=""><img src="screenshot_menu.png" alt="screenshot_menu" /></a>
+<a href=""><img src="screenshot_list.png" alt="screenshot_list" /></a></p>
+
+<h1 id="features">Features</h1>
+<ul>
+  <li>Add contacts by forward</li>
+  <li>Add contacts manually</li>
+  <li>Browse the address book using a inline keyboard</li>
+  <li>Edit contact (first name, last name, description)</li>
+  <li>Update username automatically or manually</li>
+  <li>Search in the address book</li>
+  <li>Choose order of contacts (by first name, lastname or username)</li>
+  <li>Share using inline queries</li>
+</ul>
+
+<h2 id="statistics">Statistics</h2>
+<ul>
+  <li><b>Users registered: </b><i>813</i></li>
+  <li><b>Contacts saved: </b><i>1300</i></li>
+</ul>
+
+<h2 id="current-translations">Current translations</h2>
+<ul>
+  <li>English</li>
+  <li>Italian</li>
+  <li>French</li>
+  <li>Deutsch</li>
+  <li>German</li>
+  <li>Russian</li>
+  <li>Hindi</li>
+</ul>
+
+<h2 id="technical">Technical</h2>
+<p>This bot uses the official Telegram Bot API(v2.1), it is based on HadesWrapper for Telegram and runs on a Raspberry Pi3 using php, Redis and Postgresql.</p>
+
+<h2 id="license">License</h2>
+<p>MyAddressBookBot is released under the GNU Affero General Public License.</p>
+
+
+	    
+    </div>
+  </div>
+</div>
+
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/DanySpin97" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		  
+          <li>
+            <a href="https://twitter.com/DanySpin97" title="Twitter">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+      
+		  
+          <li>
+            <a href="mailto:danyspin.ds@gmail.com" title="Email me">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		  
+		  
+		  
+      
+      
+      
+      
+		  
+        </ul>
+        <p class="copyright text-muted">
+		  Danilo Spinella
+		  &nbsp;&bull;&nbsp;
+		  2016
+
+		  
+		  &nbsp;&bull;&nbsp;
+		  <a href="http://DanySpin97.github.io/MyAddressBookBot">DanySpin97.github.io/MyAddressBookBot</a>
+		  
+	    </p>
+	        <!-- Please don't remove this, keep my open source work credited :) -->
+		<p class="theme-by text-muted">
+		  Theme by
+		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  
+    
+
+
+
+
+
+
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+      <script>
+      	if (typeof jQuery == 'undefined') {
+      	  document.write('<script src="/MyAddressBookBot/js/jquery-1.11.2.min.js"></scr' + 'ipt>');
+      	}
+      </script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/MyAddressBookBot/js/bootstrap.min.js"></script>
+    
+  
+    <!-- doing something a bit funky here because I want to be careful not to include JQuery twice! -->
+    
+	<script src="/MyAddressBookBot/js/main.js"></script>
+    
+  
+
+
+
+	<!-- Google Analytics -->
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-84714824-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+	<!-- End Google Analytics -->
+
+
+  
+  </body>
+</html>
