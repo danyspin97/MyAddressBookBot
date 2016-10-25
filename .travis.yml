@@ -6,7 +6,7 @@ php:
   - '7.0'
 
 services:
-  - mysql
+  - postgresql
   - redis-server
 
 cache:
@@ -18,7 +18,7 @@ notifications:
   on_failure: always
 
 before_script:
-  - mysql --host=127.0.0.1 -u travis -e 'create database hello_world_test; use hello_world_test;'
+  - psql -c 'create database travis_ci_test;' -U postgres
 
 before_install: phpenv config-add phpconfig.ini
 
