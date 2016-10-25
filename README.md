@@ -1,6 +1,6 @@
 # [@MyAddressBookBot](https://telegram.me/myaddressbookbot)
 [![Bot Status](https://img.shields.io/badge/bot-active-brightgreen.svg?style=plastic)]()
-[![Build Status](https://img.shields.io/badge/build-2.0-green.svg?style=plastic)]()
+[![Build Status](https://travis-ci.org/DanySpin97/MyAddressBookBot.svg?branch=master)](https://travis-ci.org/DanySpin97/MyAddressBookBot)
 [![License](https://img.shields.io/badge/license-GNU_AGPLv3-blue.svg?style=plastic)]()
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c5b60f0c78d84f02994ccdbb6a00dd32)](https://www.codacy.com/app/danyspin97/MyAddressBookBot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DanySpin97/MyAddressBookBot&amp;utm_campaign=Badge_Grade)
 

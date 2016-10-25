@@ -18,7 +18,7 @@ notifications:
   on_failure: always
 
 before_script:
-  - mysql -u travis -e 'create database hello_world_test; use hello_world_test;'
+  - mysql --host=127.0.0.1 -u travis -e 'create database hello_world_test; use hello_world_test;'
 
 before_install: phpenv config-add phpconfig.ini
 
