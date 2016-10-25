@@ -23,4 +23,4 @@ before_script:
 before_install: phpenv config-add phpconfig.ini
 
 script:
-  - ./vendor/bin/phpunit --configuration phpunit.xml
+  - phpunit --configuration phpunit.xml
