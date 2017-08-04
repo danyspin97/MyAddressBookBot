@@ -49,14 +49,26 @@ define('USERNAME_ORDER', 'username');
 // The is that is sent for the easter egg
 define('ADDING_HISSELF_STICKER_ID', 'BQADBAADdgADJkm4A4DKE1aO0rUFAg');
 
-class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
+use PhpBotFramework\Localization\Localization;
+
+use PhpBotFramework\Utility\BotState;
+
+class MyAddressBookBot extends PhpBotFramework\Bot {
     public $order;
     public $index_addressbook;
     public $selected_contact;
 
+    public function __construct(string $token) {
+        parent::__construct($token);
+        $this->keyboard = new InlineKeyboard($this);
+        $this->status = new BotState($this);
+        $this->local = new Localization($this);
+        $this->database = new Database($this);
+    }
+
     protected function processMessage() {
-        $message = &$this->update['message'];
-        $this->chat_id = &$message['from']['id'];
+        $message = $this->update['message'];
+        $this->chat_id = $message['from']['id'];
         $this->getLanguage();
         // Did the user forwarded a message from another user?
         if (isset($message['forward_from']['username']) && ($message['forward_from']['id'] !== $message['from']['id'])) {
@@ -70,11 +82,11 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
             $id = $this->database->checkContactExist($message['forward_from']['username'], $message['forward_from']['id']);
             if ($id === 0) {
                 // Send it to the user
-                $first_name = &$message['forward_from']['first_name'];
+                $first_name = $message['forward_from']['first_name'];
                 $last_name = $message['forward_from']['last_name'] ?? 'NULL';
                 $row = [
-                    'id_contact' => &$message['forward_from']['id'],
-                    'username' => &$message['forward_from']['username'],
+                    'id_contact' => $message['forward_from']['id'],
+                    'username' => $message['forward_from']['username'],
                     'first_name' => (($first_name !== '') ? $first_name : 'First Name'),
                     'last_name' => ($last_name !== '') ? $last_name : 'NULL',
                     'desc' => 'NULL'
@@ -97,7 +109,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
             $this->redis->set($this->chat_id . ':status', SHOW_CONTACT_NOTVALID);
         } else if (isset($message['text'])) {
             // Text sent by the user
-            $text = &$message['text'];
+            $text = $message['text'];
             if (strpos($text, '/start') === 0) {
                 if($this->redis->exists($this->chat_id . ':search_query')) {
                     $this->redis->delete($this->chat_id . ':search_query');
@@ -112,12 +124,12 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                     // Choose the inline keyboard to insert
                     if ($isregistred) {
                         if($id > 0) {
-                            $keyboard = &$this->inline_keyboard->getMenuInlineKeyboard();
+                            $keyboard = $this->inline_keyboard->getMenuInlineKeyboard();
                         } else {
-                            $keyboard = &$this->inline_keyboard->getAddInlineKeyboard();
+                            $keyboard = $this->inline_keyboard->getAddInlineKeyboard();
                         }
                     } else {
-                        $keyboard = &$this->inline_keyboard->getChooseLanguageStartInlineKeyboard();
+                        $keyboard = $this->inline_keyboard->getChooseLanguageStartInlineKeyboard();
                     }
                     // Send a new message
                     $this->sendMessage($this->localization[$this->language][$messagetoshow], $keyboard);
@@ -132,7 +144,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                         $this->getOrder();
                         $this->getIndexAddressbook();
                         $list = $this->database->getList();
-                        $container = &$this->database->getABList();
+                        $container = $this->database->getABList();
                         $this->sendMessage($container['string'], $this->inline_keyboard->database->getListInlineKeyboard($list, $container['usernames']));
                     } else {
                         $this->sendMessage($this->localization[$this->language]['AddressBookEmty_Msg'], $this->inline_keyboard->getABEmptyInlineKeyboard());
@@ -142,14 +154,14 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                 }
             } elseif (strpos($text, '/help') === 0) {
                 // Send help message
-                $this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
+                $this->inline_keyboard->addLevelButtons(['text' => $this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
                 $this->sendMessageKeyboard($this->localization[$this->language]['Help_Msg'], $this->inline_keyboard->getKeyboard());
                 $this->redis->set($this->chat_id . ':status', MENU);
             } elseif (strpos($text, '/about') === 0) {
                 // Send about message
-                $this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Site_Button'], 'url' => 'https://danyspin97.gitlab.io/MyAddressBookBot/'], ['text' => &$this->localization[$this->language]['Source_Button'], 'url' => 'https://gitlab.com/danyspin97/MyAddressBookBot']);
+                $this->inline_keyboard->addLevelButtons(['text' => $this->localization[$this->language]['Site_Button'], 'url' => 'https://danyspin97.gitlab.io/MyAddressBookBot/'], ['text' => $this->localization[$this->language]['Source_Button'], 'url' => 'https://gitlab.com/danyspin97/MyAddressBookBot']);
                 $this->inline_keyboard->addLevelButtons(['text' => $this->localization[$this->language]['Vote_Button'], 'url' => 'https://telegram.me/storebot?start=myaddressbookbot'], ['text' => 'HadesWrapper', 'url' => 'https://gitlab.com/WiseDragonStd/HadesWrapper']);
-                $this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
+                $this->inline_keyboard->addLevelButtons(['text' => $this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
                 $this->sendMessageKeyboard($this->localization[$this->language]['About_Msg'], $this->inline_keyboard->getKeyboard());
                 $this->redis->set($this->chat_id . ':status', MENU);
             } elseif (strpos($text, '/') === 0 && strlen($text) > 5) {
@@ -161,7 +173,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                 $username = str_replace('/', '', $username[0]);
                 $this->selected_contact = $this->database->checkContactExist($username);
                 if($this->selected_contact > 0) {
-                    $row = &$this->database->getContactRowByID();
+                    $row = $this->database->getContactRowByID();
                     $this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
                     $this->redis->delete($this->chat_id . ':message_id');
                     $this->redis->set($this->chat_id . ':status', SHOW_CONTACT);
@@ -194,7 +206,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                     if ((isset($message['from']['username']) && ($text !== ($message['from']['username']))) || !isset($message['from']['username'])) {
                                         $this->redis->hset($this->chat_id . ':contact', 'username', $text);
                                         $this->editMessageText($this->localization[$this->language]['Username_Msg'] . '@' . $text, $message_id);
-                                        $new_message = &$this->sendReplyMessageKeyboard($this->localization[$this->language]['AddFirstName_Msg'],  $this->inline_keyboard->getBackInlineKeyboard(), $message['message_id']);
+                                        $new_message = $this->sendReplyMessageKeyboard($this->localization[$this->language]['AddFirstName_Msg'],  $this->inline_keyboard->getBackInlineKeyboard(), $message['message_id']);
                                         $this->status = $status2 ?? ADDING_FIRSTNAME_AB;
                                         $this->redis->set($this->chat_id . ':status', $this->status);
                                         $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
@@ -202,7 +214,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                         if ($this->redis->exists($this->chat_id . ':easter_egg')) {
                                             $this->sendMessageRef($this->localization[$this->language]['AddHisSelf_EasterEgg']);
                                             $this->sendSticker(ADDING_HISSELF_STICKER_ID);
-                                            $new_message = &$this->sendMessage($this->localization[$this->language]['AddUsername_Msg'], $this->inline_keyboard->getBackInlineKeyboard());
+                                            $new_message = $this->sendMessage($this->localization[$this->language]['AddUsername_Msg'], $this->inline_keyboard->getBackInlineKeyboard());
                                             $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
                                             $this->redis->delete($this->chat_id . ':easter_egg');
                                         } else {
@@ -214,7 +226,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                 } else {
                                     $username = $this->database->getUsernameFromID($this->chat_id, $contact, $this->pdo);
                                     $string = '/' . $username . $this->localization[$this->language]['ContactAlreadyExist_Msg'] . NEWLINE . $this->localization[$this->language]['ResendUsername_Msg'];
-                                    $new_message = &$this->sendReplyMessageKeyboard($string, $this->inline_keyboard->getContactNotValidInlineKeyboard(), $message['message_id']);
+                                    $new_message = $this->sendReplyMessageKeyboard($string, $this->inline_keyboard->getContactNotValidInlineKeyboard(), $message['message_id']);
                                     $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
                                     $this->redis->set($this->chat_id . ':status', SHOW_CONTACT_NOTVALID);
                                 }
@@ -234,7 +246,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                     case ADDING_FIRSTNAME_AB:
                         $this->redis->hset($this->chat_id . ':contact', 'first_name', $text);
                         $this->editMessageText($this->localization[$this->language]['FirstName_Msg'] . $text, $message_id);
-                        $new_message = &$this->sendReplyMessageKeyboard($this->localization[$this->language]['AddLastName_Msg'], $this->inline_keyboard->getBackSkipInlineKeyboard(), $message['message_id']);
+                        $new_message = $this->sendReplyMessageKeyboard($this->localization[$this->language]['AddLastName_Msg'], $this->inline_keyboard->getBackSkipInlineKeyboard(), $message['message_id']);
                         $this->status = $status2 ?? ADDING_LASTNAME_AB;
                         $this->redis->set($this->chat_id . ':status', $this->status);
                         $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
@@ -245,7 +257,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                     case ADDING_LASTNAME_AB:
                         $this->redis->hset($this->chat_id . ':contact', 'last_name', $text);
                         $this->editMessageText($this->localization[$this->language]['LastName_Msg'] . $text, $message_id);
-                        $new_message = &$this->sendReplyMessageKeyboard($this->localization[$this->language]['AddDescription_Msg'], $this->inline_keyboard->getBackSkipInlineKeyboard(), $message['message_id']);
+                        $new_message = $this->sendReplyMessageKeyboard($this->localization[$this->language]['AddDescription_Msg'], $this->inline_keyboard->getBackSkipInlineKeyboard(), $message['message_id']);
                         $this->status = $status2 ?? ADDING_DESC_AB;
                         $this->redis->set($this->chat_id . ':status', $this->status);
                         $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
@@ -255,15 +267,15 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                         $this->selected_contact = $this->database->getContactRowOwnedByUser();
                         $this->selected_contact++;
                         $row = $this->redis->hGetAll($this->chat_id . ':contact');
-                        $row['id'] = &$this->selected_contact;
-                        $row['description'] = &$text;
+                        $row['id'] = $this->selected_contact;
+                        $row['description'] = $text;
                         $this->database->saveContact($row);
                         $this->getOrder();
                         $this->getABIndexForContact();
-                        $list = &$this->database->getList();
-                        $container = &$this->database->getABList();
+                        $list = $this->database->getList();
+                        $container = $this->database->getABList();
                         $this->editMessageText($this->localization[$this->language]['Description_Msg'] . $text, $message_id);
-                        $new_message = &$this->sendMessage($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames']));
+                        $new_message = $this->sendMessage($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames']));
                         $this->redis->delete($this->chat_id . ':contact');
                         $this->redis->set($this->chat_id . ':index_addressbook', $this->index_addressbook);
                         $this->redis->delete($this->chat_id . ':message_id');
@@ -277,9 +289,9 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             $text = preg_replace('/[^\w]/', '', $text);
                             if (strlen($text) > 5 && strlen($text) <= 32) {
                                 $this->database->updateContactInfo('username', $text);
-                                $row = &$this->database->getContactRowByID();
+                                $row = $this->database->getContactRowByID();
                                 $this->editMessageText($this->localization[$this->language]['EditedUsername_Msg'] . '@' . $text, $message_id);
-                                $new_message = &$this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
+                                $new_message = $this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
                                 $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
                                 $this->redis->set($this->chat_id . ':status', SHOW_CONTACT);
                                 $this->getOrder();
@@ -288,20 +300,20 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                 }
                             } else {
                                 $string = $this->localization[$this->language]['UsernameLenght_Msg'] . NEWLINE . $this->localization[$this->language]['ResendUsername_Msg'];
-                                $new_message = &$this->sendReplyMessageKeyboard($string, $this->inline_keyboard->getBackInlineKeyboard(), $message['message_id']);
+                                $new_message = $this->sendReplyMessageKeyboard($string, $this->inline_keyboard->getBackInlineKeyboard(), $message['message_id']);
                                 $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
                             }
                         } else {
-                            $new_message = &$this->sendReplyMessageKeyboard($this->localization[$this->language]['ResendUsername_Msg'], $this->inline_keyboard->getBackInlineKeyboard(), $message['message_id']);
+                            $new_message = $this->sendReplyMessageKeyboard($this->localization[$this->language]['ResendUsername_Msg'], $this->inline_keyboard->getBackInlineKeyboard(), $message['message_id']);
                             $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
                         }
                         break;
                     case EDITFIRSTNAME:
                         $this->selected_contact = $this->redis->get($this->chat_id . ':selected_contact');
                         $this->database->updateContactInfo('first_name', $text);
-                        $row = &$this->database->getContactRowByID();
+                        $row = $this->database->getContactRowByID();
                         $this->editMessageText($this->localization[$this->language]['EditedFirstName_Msg'] . $text, $message_id);
-                        $new_message = &$this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
+                        $new_message = $this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
                         $this->redis->set($this->chat_id . ':status', SHOW_CONTACT);
                         $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
                         $this->redis->set($this->chat_id . ':index_addressbook', $this->getABIndexForContact());
@@ -309,9 +321,9 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                     case EDITLASTNAME:
                         $this->selected_contact = $this->redis->get($this->chat_id . ':selected_contact');
                         $this->database->updateContactInfo('last_name', $text);
-                        $row = &$this->database->getContactRowByID();
+                        $row = $this->database->getContactRowByID();
                         $this->editMessageText($this->localization[$this->language]['EditedLastName_Msg'] . $text, $message_id);
-                        $new_message = &$this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
+                        $new_message = $this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
                         $this->redis->set($this->chat_id . ':status', SHOW_CONTACT);
                         $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
                         $this->redis->set($this->chat_id . ':index_addressbook', $this->getABIndexForContact());
@@ -319,18 +331,18 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                     case EDITDESC:
                         $this->selected_contact = $this->redis->get($this->chat_id . ':selected_contact');
                         $this->database->updateContactInfo('desc', $text);
-                        $row = &$this->database->getContactRowByID($this->chat_id, $this->selected_contact, $this->pdo);
+                        $row = $this->database->getContactRowByID($this->chat_id, $this->selected_contact, $this->pdo);
                         $this->editMessageText($this->localization[$this->language]['EditedDescription_Msg'] . $text, $message_id);
-                        $new_message = &$this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
+                        $new_message = $this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
                         $this->redis->set($this->chat_id . ':status', SHOW_CONTACT);
                         $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
                         break;
                     case ADDING_LASTNAME_CONTACT:
                         $this->selected_contact = $this->redis->get($this->chat_id . ':selected_contact');
                         $this->database->updateContactInfo('last_name', $text);
-                        $row = &$this->database->getContactRowByID();
+                        $row = $this->database->getContactRowByID();
                         $this->editMessageText($this->localization[$this->language]['EditedLastName_Msg'] . $text, $message_id);
-                        $new_message = &$this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
+                        $new_message = $this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
                         $this->redis->set($this->chat_id . ':status', SHOW_CONTACT);
                         $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
                         $this->redis->set($this->chat_id . ':index_addressbook', $this->getABIndexForContact());
@@ -338,9 +350,9 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                     case ADDING_DESC_CONTACT:
                         $this->selected_contact = $this->redis->get($this->chat_id . ':selected_contact');
                         $this->database->updateContactInfo('desc', $text);
-                        $row = &$this->database->getContactRowByID($this->chat_id, $selected_contact, $this->pdo);
+                        $row = $this->database->getContactRowByID($this->chat_id, $selected_contact, $this->pdo);
                         $this->editMessageText($message_id, $this->localization[$this->language]['EditedDescription_Msg'] . $text);
-                        $new_message = &$this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
+                        $new_message = $this->sendMessage($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row));
                         $this->redis->set($this->chat_id . ':status', SHOW_CONTACT);
                         $this->redis->set($this->chat_id . ':message_id', $new_message['message_id']);
                         break;
@@ -349,15 +361,15 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                         if (isset($row)) {
                             $this->selected_contact = $this->database->getContactRowOwnedByUser();
                             $this->selected_contact++;
-                            $row['id'] = &$this->selected_contact;
-                            $row['desc'] = &$text;
+                            $row['id'] = $this->selected_contact;
+                            $row['desc'] = $text;
                             $this->database->saveContact($row);
                             $this->getOrder();
                             $this->getABIndexForContact();
-                            $list = &$this->database->getList();
-                            $container = &$this->database->getABList();
+                            $list = $this->database->getList();
+                            $container = $this->database->getABList();
                             $this->editMessageText($this->localization[$this->language]['Description_Msg'] . $text, $message_id);
-                            $new_message = &$this->sendMessage($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames']));
+                            $new_message = $this->sendMessage($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames']));
                             $this->redis->set($this->chat_id . ':status', SHOW_AB);
                             $this->redis->delete($this->chat_id . ':selected_contact');
                             $this->redis->set($this->chat_id . ':index_addressbook', $this->index_addressbook);
@@ -371,12 +383,12 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             // Choose the inline keyboard to insert
                             if ($isregistred) {
                                 if($id > 0) {
-                                    $keyboard = &$this->inline_keyboard->getMenuInlineKeyboard();
+                                    $keyboard = $this->inline_keyboard->getMenuInlineKeyboard();
                                 } else {
-                                    $keyboard = &$this->inline_keyboard->getAddInlineKeyboard();
+                                    $keyboard = $this->inline_keyboard->getAddInlineKeyboard();
                                 }
                             } else {
-                                $keyboard = &$this->inline_keyboard->getChooseLanguageStartInlineKeyboard();
+                                $keyboard = $this->inline_keyboard->getChooseLanguageStartInlineKeyboard();
                             }
                             // Send a new message
                             $this->sendMessage($this->localization[$this->language][$messagetoshow], $keyboard);
@@ -391,8 +403,8 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                         $page = 1;
                         $this->getOrder();
                         $this->editMessageText($this->localization[$this->language]['EnterSearchQuery_Msg'] . "\"<b>$text</b>\"", $message_id);
-                        $container = &$this->database->getSearchResults($text, $page);
-                        $list = &$this->database->getListResults($text);
+                        $container = $this->database->getSearchResults($text, $page);
+                        $list = $this->database->getListResults($text);
                         if($list > 0) {
                             $this->index_addressbook = 1;
                             $this->sendReplyMessageKeyboard($container['string'], $this->inline_keyboard->getListInlineKeyboard($page, $container['usernames'], 'search'), $message['message_id']);
@@ -408,9 +420,9 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                     case NOSTATUS:
                         $id = $this->database->getContactRowOwnedByUser();
                         if($id > 0) {
-                            $keyboard = &$this->inline_keyboard->getMenuInlineKeyboard();
+                            $keyboard = $this->inline_keyboard->getMenuInlineKeyboard();
                         } else {
-                            $keyboard = &$this->inline_keyboard->getAddInlineKeyboard();
+                            $keyboard = $this->inline_keyboard->getAddInlineKeyboard();
                         }
                         $this->sendMessage($this->localization[$this->language][$messagetoshow], $keyboard);
                         break;
@@ -422,8 +434,8 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
     }
 
     protected function processCallbackQuery() {
-        $callback_query = &$this->update['callback_query'];
-        $this->chat_id = &$callback_query['from']['id'];
+        $callback_query = $this->update['callback_query'];
+        $this->chat_id = $callback_query['from']['id'];
         $message_id = $callback_query['message']['message_id'] ?? null;
         $inline_message_id = $callback_query['inline_message_id'] ?? null;
         $data = $callback_query['data'];
@@ -440,7 +452,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             $this->getOrder();
                             $this->getIndexAddressbook();
                             $list = $this->database->getList();
-                            $container = &$this->database->getABList();
+                            $container = $this->database->getABList();
                             $this->editMessageTextKeyboard($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames']), $message_id);
                         } else {
                             $this->editMessageTextKeyboard($this->localization[$this->language]['AddressBookEmty_Msg'], $this->inline_keyboard->getABEmptyInlineKeyboard(), $message_id);
@@ -456,9 +468,9 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                         }
                         $spaces = $this->database->getContactRowOwnedByUser();
                         if ($spaces > 0) {
-                            $keyboard = &$this->inline_keyboard->getMenuInlineKeyboard();
+                            $keyboard = $this->inline_keyboard->getMenuInlineKeyboard();
                         } else {
-                            $keyboard = &$this->inline_keyboard->getAddInlineKeyboard();
+                            $keyboard = $this->inline_keyboard->getAddInlineKeyboard();
                         }
                         $this->editMessageTextKeyboard($this->localization[$this->language]['Menu_Msg'], $keyboard, $message_id);
                         $this->redis->set($this->chat_id . ':status', MENU);
@@ -488,9 +500,9 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             case ADDING_USERNAME_MENU:
                                 $rows = $this->database->getContactRowOwnedByUser();
                                 if($rows > 0) {
-                                    $keyboard = &$this->inline_keyboard->getMenuInlineKeyboard();
+                                    $keyboard = $this->inline_keyboard->getMenuInlineKeyboard();
                                 } else {
-                                    $keyboard = &$this->inline_keyboard->getAddInlineKeyboard();
+                                    $keyboard = $this->inline_keyboard->getAddInlineKeyboard();
                                 }
                                 $this->editMessageTextKeyboard($this->localization[$this->language]['Menu_Msg'], $keyboard, $message_id);
                                 $this->redis->set($this->chat_id . ':status', MENU);
@@ -501,7 +513,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                     $this->getIndexAddressbook();
                                     $this->getOrder();
                                     $list = $this->database->getList();
-                                    $container = &$this->database->getABList();
+                                    $container = $this->database->getABList();
                                     $this->editMessageTextKeyboard($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames']), $message_id);
                                 } else {
                                     $this->editMessageTextKeyboard($this->localization[$this->language]['AddressBookEmty_Msg'], $this->inline_keyboard->getABEmptyInlineKeyboard(), $message_id);
@@ -557,7 +569,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             case ADDING_DESC_CONTACT:
                             case DELETE_AS_PROMPT:
                                 $this->selected_contact = $this->redis->get($this->chat_id . ':selected_contact');
-                                $row = &$this->database->getContactRowByID();
+                                $row = $this->database->getContactRowByID();
                                 $this->editMessageTextKeyboard($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row), $message_id);
                                 $this->redis->set($this->chat_id . ':status', $this->status);
                                 $this->answerEmptyCallbackQuery();
@@ -573,7 +585,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                     $this->getOrder();
                                     $this->getIndexAddressbook();
                                     $list = $this->database->getList();
-                                    $container = &$this->database->getABList();
+                                    $container = $this->database->getABList();
                                     $this->editMessageTextKeyboard($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames']), $message_id);
                                 } else {
                                     $this->editMessageTextKeyboard($this->localization[$this->language]['AddressBookEmty_Msg'], $this->inline_keyboard->getABEmptyInlineKeyboard(), $message_id);
@@ -605,13 +617,13 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                 $this->selected_contact++;
 				$this->database->checkIDUsed();
                                 $row = $this->redis->hGetAll($this->chat_id . ':contact');
-                                $row['id'] = &$this->selected_contact;
+                                $row['id'] = $this->selected_contact;
                                 $row['description'] = 'NULL';
                                 $this->database->saveContact($row);
                                 $this->getOrder();
                                 $this->getABIndexForContact();
                                 $list = $this->database->getList();
-                                $container = &$this->database->getABList();
+                                $container = $this->database->getABList();
                                 $this->editMessageText($container['string'], $message_id, $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames']));
                                 $this->redis->set($this->chat_id . ':status', SHOW_AB);
                                 $this->redis->delete($this->chat_id . ':contact');
@@ -620,9 +632,9 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             default:
                                 $id = $this->database->getContactRowOwnedByUser();
                                 if($id > 0) {
-                                    $keyboard = &$this->inline_keyboard->getMenuInlineKeyboard();
+                                    $keyboard = $this->inline_keyboard->getMenuInlineKeyboard();
                                 } else {
-                                    $keyboard = &$this->inline_keyboard->getAddInlineKeyboard();
+                                    $keyboard = $this->inline_keyboard->getAddInlineKeyboard();
                                 }
                                 $this->sendMessage($this->localization[$this->language][$messagetoshow], $keyboard);
                                 $this->answerEmptyCallbackQuery();
@@ -630,14 +642,14 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                         }
                         break;
                     case 'help':
-                        $this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
+                        $this->inline_keyboard->addLevelButtons(['text' => $this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
                         $this->editMessageTextKeyboard($this->localization[$this->language]['Help_Msg'], $this->inline_keyboard->getKeyboard(), $message_id);
                         $this->redis->set($this->chat_id . ':status', MENU);
                         break;
                     case 'about':
-                        //$this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Site_Button'], 'url' => ''], ['text' => &$this->localization[$this->language]['Source_Button'], 'url' => 'https://gitlab.com/danyspin97/MyAddressBookBot']);
+                        //$this->inline_keyboard->addLevelButtons(['text' => $this->localization[$this->language]['Site_Button'], 'url' => ''], ['text' => $this->localization[$this->language]['Source_Button'], 'url' => 'https://gitlab.com/danyspin97/MyAddressBookBot']);
                         $this->inline_keyboard->addLevelButtons(['text' => $this->localization[$this->language]['Vote_Button'], 'url' => 'https://telegram.me/storebot?start=myaddressbookbot'], ['text' => 'HadesWrapper', 'url' => 'https://gitlab.com/WiseDragonStd/HadesWrapper']);
-                        $this->inline_keyboard->addLevelButtons(['text' => &$this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
+                        $this->inline_keyboard->addLevelButtons(['text' => $this->localization[$this->language]['Back_Button'], 'callback_data' => 'menu']);
                         $this->editMessageTextKeyboard($this->localization[$this->language]['About_Msg'], $this->inline_keyboard->getKeyboard(), $message_id);
                         $this->redis->set($this->chat_id . ':status', MENU);
                         break;
@@ -673,7 +685,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                         $this->index_addressbook = $this->redis->get($this->chat_id . ':index_search');
                         $search_query = $this->redis->get($this->chat_id . ':search_query');
                         $this->getOrder();
-                        $container = &$this->database->getSearchResults($search_query);
+                        $container = $this->database->getSearchResults($search_query);
                         $list = $this->database->getListResults($search_query);
                         if($list > 0) {
                             $this->editMessageTextKeyboard($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames'], 'search'), $message_id);
@@ -686,9 +698,9 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                         break;
                     case 'update/username':
                         $this->selected_contact = $this->redis->get($this->chat_id . ':selected_contact');
-                        $row = &$this->database->getContactRowByID();
+                        $row = $this->database->getContactRowByID();
                         if (isset($row['id_contact'])) {
-                            $chat = &$this->getChatRef($row['id_contact']);
+                            $chat = $this->getChatRef($row['id_contact']);
                             $new_username = $chat['username'];
                         }
                         if (isset($new_username) && isset($chat) && !empty($chat) && $new_username !== $row['username'] && !isset($chat['error_code'])) {
@@ -730,13 +742,13 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                         $this->selected_contact = $this->database->getContactRowOwnedByUser();
                         $this->selected_contact++;
                         $row = $this->redis->hGetAll($this->chat_id . ':forward');
-                        $row['id'] = &$this->selected_contact;
+                        $row['id'] = $this->selected_contact;
                         $row['desc'] = 'NULL';
                         $this->database->saveContact($row);
                         $this->getOrder();
                         $this->getABIndexForContact();
-                        $list = &$this->database->getList();
-                        $container = &$this->database->getABList();
+                        $list = $this->database->getList();
+                        $container = $this->database->getABList();
                         $this->editMessageTextKeyboard($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames']), $message_id);
                         $this->answerCallbackQueryRef($this->localization[$this->language]['Saved_AnswerCallback']);
                         $this->redis->set($this->chat_id . ':index_addressbook', $this->index_addressbook);
@@ -755,7 +767,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             $suffix = $string[2];
                             $this->redis->set($this->chat_id . ':status', SHOW_CONTACT);
                             $this->redis->set($this->chat_id . ':selected_contact', $this->selected_contact);
-                            $row = &$this->database->getContactRowByID();
+                            $row = $this->database->getContactRowByID();
                             $this->editMessageTextKeyboard($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row), $message_id);
                             $this->answerCallbackQuery($this->localization[$this->language]['ShowingContact_AsnwerCallback'] . $row['first_name'] .  (($row['last_name'] !== 'NULL') ? (' ' . $row['last_name']) : ''));
                         } elseif (strpos($string[0], 'ab') !== false) {
@@ -763,7 +775,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             $this->redis->set($this->chat_id . ':index_addressbook', $this->index_addressbook);
                             $list = $this->database->getList();
                             $this->getOrder();
-                            $container = &$this->database->getABList();
+                            $container = $this->database->getABList();
                             $this->editMessageTextKeyboard($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames']), $message_id);
                             $this->answerEmptyCallbackQuery();
                         } elseif (strpos($string[0], 'edit') !== false) {
@@ -793,7 +805,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                     $this->selected_contact = $this->database->getContactRowOwnedByUser();
                                     $this->selected_contact++;
                                     $row = $this->redis->hGetAll($this->chat_id . ':forward');
-                                    $row['id'] = &$this->selected_contact;
+                                    $row['id'] = $this->selected_contact;
                                     $row['desc'] = 'NULL';
                                     $this->database->saveContact($row);
                                     $this->editMessageTextKeyboard($this->getContactInfoByRow($row), $this->inline_keyboard->getEditContactInlineKeyboard($row), $message_id);
@@ -864,7 +876,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                                 $this->redis->set($this->chat_id . ':index_addressbook', $this->index_addressbook);
                                             }
                                             $this->getOrder();
-                                            $container = &$this->database->getABList();
+                                            $container = $this->database->getABList();
                                             $this->editMessageTextKeyboard($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames']), $message_id);
                                         } else {
                                             $this->editMessageTextKeyboard($this->localization[$this->language]['AddressBookEmty_Msg'], $this->inline_keyboard->getABEmptyInlineKeyboard(), $message_id);
@@ -878,7 +890,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                             $this->index_addressbook--;
                                         }
                                         $this->getOrder();
-                                        $container = &$this->database->getSearchResults($search_query);
+                                        $container = $this->database->getSearchResults($search_query);
                                         if($list > 0) {
                                            $this->editMessageTextKeyboard($container['string'], $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames'], 'search'), $message_id);
                                         } else {
@@ -896,14 +908,14 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                     switch ($this->status) {
                                         case EDITLASTNAME:
                                             $this->database->updateContactInfo('last_name', 'NULL');
-                                            $row = &$this->database->getContactRowByID($this->chat_id, $selected_contact, $this->pdo);
+                                            $row = $this->database->getContactRowByID($this->chat_id, $selected_contact, $this->pdo);
                                             $this->editMessageText($this->localization[$this->language]['DeletedLastName_Msg'] . NEWLINE . $this->getContactInfoByRow($row), $message_id, $this->inline_keyboard->getEditContactInlineKeyboard($row));
                                             $this->redis->set($this->chat_id . ':index_addressbook', $this->getABIndexForContact());
                                             $this->redis->set($this->chat_id . ':status', SHOW_CONTACT);
                                             break;
                                         case EDITDESC:
                                             $this->database->updateContactInfo('desc', 'NULL');
-                                            $row = &$this->database->getContactRowByID();
+                                            $row = $this->database->getContactRowByID();
                                             $this->editMessageText($this->localization[$this->language]['DeletedDescription_Msg'] . NEWLINE . $this->getContactInfoByRow($row), $message_id, $this->inline_keyboard->getEditContactInlineKeyboard($row));
                                             $this->redis->set($this->chat_id . ':status', SHOW_CONTACT);
                                             break;
@@ -962,7 +974,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                             $this->index_addressbook = $string[1];
                             $search_query = $this->redis->get($this->chat_id . ':search_query');
                             $this->getOrder();
-                            $container = &$this->database->getSearchResults($search_query);
+                            $container = $this->database->getSearchResults($search_query);
                             $list = $this->database->getListResults($search_query);
                             $this->editMessageText($this->index_addressbook . $container['string'], $message_id, $this->inline_keyboard->getListInlineKeyboard($list, $container['usernames'], 'search'));
                             $this->redis->set($this->chat_id . ':index_search', $this->index_addressbook);
@@ -999,7 +1011,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                                 $this->redis->set($this->chat_id . ':status', SHOW_CONTACT_NOTVALID);
                             }
                         } elseif(isset($callback_query['from']['username']) && ($row['username'] === ($callback_query['from']['username']))) {
-                            $new_message = &$this->sendMessage($this->localization[$this->language]['AddHisSelf_Msg'], $this->inline_keyboard->getContactNotValidInlineKeyboard());
+                            $new_message = $this->sendMessage($this->localization[$this->language]['AddHisSelf_Msg'], $this->inline_keyboard->getContactNotValidInlineKeyboard());
                             $this->redis->set($this->chat_id . ':status', SHOW_CONTACT_NOTVALID);
                         }
                     } else {
@@ -1012,9 +1024,9 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
     }
 
     protected function processInlineQuery() {
-        $inline_query = &$this->update['inline_query'];
-        $this->chat_id = &$inline_query['from']['id'];
-        $text = &$inline_query['query'];
+        $inline_query = $this->update['inline_query'];
+        $this->chat_id = $inline_query['from']['id'];
+        $text = $inline_query['query'];
         $this->getLanguage();
         $this->getOrder();
         $isregistred = $this->database->isUserRegistered();
@@ -1032,7 +1044,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
                 if (isset($row['last_name']) && ($row['last_name'] !== 'NULL')) {
                     $string = $string . ' ' . $row['last_name'];
                 }
-                $message_text = &$this->getContactInfoByRowForInline($row);
+                $message_text = $this->getContactInfoByRowForInline($row);
                 $this->redis->hMSet($this->chat_id . ':temp' . $results->newArticleKeyboard($string, $message_text, $row['username'], $this->inline_keyboard->getSaveFromInlineInlineKeyboard()), $row);
             }
             $sth = null;
@@ -1043,8 +1055,8 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
     }
 
     protected function processInlineResult() {
-        $chosen_inline_result = &$this->update['chosen_inline_result'];
-        $this->chat_id = &$inline_result['from']['id'];
+        $chosen_inline_result = $this->update['chosen_inline_result'];
+        $this->chat_id = $inline_result['from']['id'];
         $this->getLanguage();
         $share =  $this->redis->get('share');
         $this->redis->incr('share');
@@ -1093,7 +1105,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
         return $string;
     }
 
-    public function &getContactInfoByRow(&$row, $show_desc = true) {
+    public function &getContactInfoByRow($row, $show_desc = true) {
         $string = ROUNDS_DOWN . NEWLINE . $this->localization[$this->language]['Username_Msg'] . '@' . $row['username'] . NEWLINE . $this->localization[$this->language]['FirstName_Msg'] . $row['first_name'] . NEWLINE;
         if (isset($row['last_name']) && ($row['last_name'] !== 'NULL')) {
             $string = $string . $this->localization[$this->language]['LastName_Msg'] . $row['last_name'] . NEWLINE;
@@ -1105,7 +1117,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
         return $string;
     }
 
-    public function &getContactInfoByRowForInline(&$row) {
+    public function &getContactInfoByRowForInline($row) {
         $string = ROUNDS_DOWN . NEWLINE . $this->localization[$this->language]['Username_Msg'] . '@' . $row['username'] . NEWLINE . $this->localization[$this->language]['FirstName_Msg'] . $row['first_name'] . NEWLINE;
         if (isset($row['last_name']) && ($row['last_name'] !== 'NULL')) {
         $string = $string . $this->localization[$this->language]['LastName_Msg'] . $row['last_name'] . NEWLINE;
@@ -1184,7 +1196,7 @@ class MyAddressBookBot extends WiseDragonStd\HadesWrapper\Bot {
         }
     }
 
-    public function &handleUsernameDesc(&$string) {
+    public function &handleUsernameDesc($string) {
         $usernames = FALSE;
         preg_match_all("/(@\w+)/u", $string, $matches);
         if ($matches) {

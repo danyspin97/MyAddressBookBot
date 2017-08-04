@@ -1,6 +1,6 @@
 <?php
 
-class Database extends \WiseDragonStd\HadesWrapper\Database {
+class Database extends PhpBotFramework\Database\Database {
     /*
     * Update a variable of a Contact row
     * @param:
@@ -25,7 +25,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
        $sth = null;
    }
 
-   public function &getContactRowByID() {
+   public function getContactRowByID() {
        $sth = $this->pdo->prepare('SELECT "username", "first_name", "last_name", "desc", "id", "id_contact" FROM "Contact" WHERE "id" = :id_as AND "id_owner" = :id_owner');
        $sth->bindParam(':id_as', $this->bot->selected_contact);
        $sth->bindParam(':id_owner', $this->bot->getChatID());
@@ -129,7 +129,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
         $sth = null;
     }
 
-    public function &getSearchResults($query) {
+    public function getSearchResults($query) {
         $string = $this->localization[$this->language]['ShowResults_Msg'] . "\"<b>$query</b>\"" . NEWLINE;
         $query = strtolower($query);
         $sth = $this->pdo->prepare("SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM (SELECT \"username\", \"first_name\", \"last_name\", \"desc\", \"id\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id) AS T WHERE LOWER(\"first_name\") LIKE '$query%'  OR LOWER(\"first_name\") LIKE '%$query%' OR LOWER(\"last_name\") LIKE '$query%' OR LOWER(\"last_name\") LIKE '%$query%' OR  LOWER(CONCAT_WS(' ', \"first_name\", \"last_name\")) LIKE '$query%' OR LOWER(username) LIKE '$query%' OR LOWER(username) LIKE '%$query%' OR LOWER(username) LIKE '@$query%' OR LOWER(username) LIKE '%@$query%' OR LOWER(CONCAT_WS(' ', \"first_name\", \"last_name\")) LIKE '%$query' OR LOWER(CONCAT_WS(' ', \"last_name\", \"first_name\")) LIKE '$query%' OR LOWER(CONCAT_WS(' ', \"last_name\", \"first_name\")) LIKE '%$query' ORDER BY " . $this->bot->order);
@@ -170,7 +170,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
         return $container;
     }
 
-    public function &getABList() {
+    public function getABList() {
         $string = $this->bot->localization[$this->language]['Bot_Title'] . NEWLINE;
         $id = ($this->bot->index_addressbook - 1) * SPACEPERVIEW + 1;
         $maxid = $id + SPACEPERVIEW;
@@ -210,7 +210,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
         return $container;
     }
 
-    public function &getListResults($query) {
+    public function getListResults($query) {
         $sth = $this->pdo->prepare("SELECT COUNT(\"username\") FROM (SELECT \"username\", \"first_name\", \"last_name\" FROM \"Contact\" WHERE \"id_owner\" = :chat_id) AS T WHERE \"first_name\" LIKE '$query%'  OR \"first_name\" LIKE '%$query%' OR \"last_name\" LIKE '$query%' OR \"last_name\" LIKE '%$query%' OR  CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '$query%' OR username LIKE '$query%' OR username LIKE '%$query%' OR username LIKE '@$query%' OR username LIKE '%@$query%' OR CONCAT_WS(' ', \"first_name\", \"last_name\") LIKE '%$query' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '$query%' OR CONCAT_WS(' ', \"last_name\", \"first_name\") LIKE '%$query';");
         $sth->bindParam(':chat_id', $this->bot->getChatID());
         $sth->execute();
@@ -222,7 +222,7 @@ class Database extends \WiseDragonStd\HadesWrapper\Database {
         return $list;
     }
 
-    public function &getList() {
+    public function getList() {
         // Count how many Contact does this user own by doing a SELECT COUNT query
         $sth = $this->pdo->prepare('SELECT COUNT("id") FROM "Contact" WHERE "id_owner" = :chat_id');
         $sth->bindParam(':chat_id', $this->bot->getChatID());

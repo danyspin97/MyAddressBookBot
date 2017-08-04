@@ -1,7 +1,7 @@
 <?php
 
-class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
-    public function &getAddInlineKeyboard() {
+class InlineKeyboard extends PhpBotFramework\Localization\Button {
+    public function getAddInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -19,7 +19,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getMenuInlineKeyboard() {
+    public function getMenuInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -53,7 +53,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getChooseLanguageStartInlineKeyboard() {
+    public function getChooseLanguageStartInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
                 [
                     [
@@ -91,7 +91,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getBackInlineKeyboard() {
+    public function getBackInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -105,7 +105,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getBackSkipInlineKeyboard() {
+    public function getBackSkipInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -123,7 +123,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getBackSearchInlineKeyboard() {
+    public function getBackSearchInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -137,7 +137,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getBackDeleteInlineKeyboard($islastname) {
+    public function getBackDeleteInlineKeyboard($islastname) {
         if ($islastname) {
             $inline_keyboard = [ 'inline_keyboard' =>
                 [
@@ -172,7 +172,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getOptionsInlineKeyboard(&$from) {
+    public function getOptionsInlineKeyboard(&$from) {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -238,7 +238,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getChooseLanguageInlineKeyboard() {
+    public function getChooseLanguageInlineKeyboard() {
         $inline_keyboard = ['inline_keyboard' => array()];
         foreach($this->bot->localization['launguages'] as $languages => $language_msg) {
             if (strpos($languages, $this->bot->language) !== false) {
@@ -268,7 +268,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getEditContactInlineKeyboard(&$row) {
+    public function getEditContactInlineKeyboard(&$row) {
         if (isset($row['id_contact']) && $row['id_contact'] !== 'NULL') {
             $inline_keyboard = [ 'inline_keyboard' =>
                 [
@@ -380,7 +380,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getDeleteContactPromptInlineKeyboard() {
+    public function getDeleteContactPromptInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -398,7 +398,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getDeleteAllPromptInlineKeyboard() {
+    public function getDeleteAllPromptInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -417,7 +417,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
     }
 
 
-    public function &getCancelSkipInlineKeyBoard() {
+    public function getCancelSkipInlineKeyBoard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -435,7 +435,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getSaveInlineKeyboard() {
+    public function getSaveInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -465,7 +465,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getSaveFromInlineInlineKeyboard() {
+    public function getSaveFromInlineInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -479,7 +479,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return $inline_keyboard;
     }
 
-    public function &getShareInlineKeyboard(&$share) {
+    public function getShareInlineKeyboard(&$share) {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -494,7 +494,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
     }
 
     // Show basic button when a non valid public function or data is requested
-    public function &getContactNotValidInlineKeyboard() {
+    public function getContactNotValidInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -520,7 +520,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getABEmptyInlineKeyboard() {
+    public function getABEmptyInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -546,7 +546,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getSearchNullInlineKeyboard() {
+    public function getSearchNullInlineKeyboard() {
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -574,7 +574,7 @@ class InlineKeyboard extends \WiseDragonStd\HadesWrapper\InlineKeyboard {
 
 
 
-    public function &getListInlineKeyboard(&$list, &$usernames, $prefix = 'ab') {
+    public function getListInlineKeyboard(&$list, &$usernames, $prefix = 'ab') {
         if ($list > 0) {
             if ($this->bot->index_addressbook == 1) {
                 if ($list > 1) {
